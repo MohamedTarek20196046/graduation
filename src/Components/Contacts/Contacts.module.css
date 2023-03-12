@@ -1,0 +1,39 @@
+.contact
+{
+    background-color: #1E2846;
+}
+.contact h3
+{
+    color: #4BD1FF;
+
+}
+.contact .formControlBg
+{
+    background-color: #465578 !important;
+    border: 0px !important;
+    color: white !important;
+    
+}
+
+.contact .formControlBg::placeholder { 
+    color: #4BD1FF !important;
+    opacity: 0.4 !important;
+    
+}
+
+.submitBtn
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+    border: none !important;
+    
+    padding: 10px 30px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+   margin-left: auto !important;
+}
+
+.contact form
+{
+    border: 1px solid rgba(255,255,255, 0.2) !important;
+}

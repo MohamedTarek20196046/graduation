@@ -1,0 +1,22 @@
+.services
+{
+    background-color: #2F3F62;
+    
+}
+.serviceCard
+{
+    background-color: #465578 !important;
+    border-radius: 20px !important;
+    box-shadow: none ;
+}
+.serviceCard img
+{
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+    height: 306px;
+}
+.services h3
+{
+    color: #4BD1FF;
+
+}

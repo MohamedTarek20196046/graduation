@@ -1,0 +1,22 @@
+header
+{
+    background-image: url(../images/Rectangle\ 5.png);
+    min-height: 100vh;
+    
+    background-position: center center;
+}
+
+.join
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+   
+   
+}
+.join:hover
+{
+    background-color: transparent !important;
+    border: 1px solid #2A6582 !important;
+    color: #4BD1FF !important;
+}
+
