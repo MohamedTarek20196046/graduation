@@ -1,6 +1,11 @@
 import React from 'react'
 import styles from './Service.module.css'
 import lane from '../images/lane.jpeg'
+import Pedestrian from '../images/Pedestrian-Detection-Results.png'
+import cross from '../images/cross2.jpg'
+import sign from '../images/profile_hud79532efb6eb74901e92fd381f814933_919458_300x170_fit_box_2.png'
+import traffic from '../images/traffic-light-detection-using-tensorflow-object-detection-api-fig7-755150.jpg'
+
 
 export default function Service() {
   return (
@@ -20,7 +25,7 @@ export default function Service() {
 
                 <div className="col-md-4">
                     <div className={`${styles.serviceCard} text-white`}>
-                        <img src="images/Pedestrian-Detection-Results.png" className="w-100" alt=""/>
+                        <img src={Pedestrian} className="w-100" alt=""/>
                         <h4 className="pt-3">Pedestrians detection</h4>
 
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit illo delectus repellat error
@@ -30,7 +35,7 @@ export default function Service() {
 
                 <div className="col-md-4">
                     <div className={`${styles.serviceCard} text-white`}>
-                        <img src="images/traffic-light-detection-using-tensorflow-object-detection-api-fig7-755150.jpg"
+                        <img src={traffic}
                             className="w-100" alt=""/>
                         <h4 className="pt-3">Traffic-lights detection</h4>
 
@@ -41,7 +46,7 @@ export default function Service() {
 
                 <div className="col-md-4">
                     <div className={`${styles.serviceCard} text-white`}>
-                        <img src="images/profile_hud79532efb6eb74901e92fd381f814933_919458_300x170_fit_box_2.png"
+                        <img src={sign}
                             className="w-100" alt=""/>
                         <h4 className="pt-3">Signs detection</h4>
 
@@ -51,7 +56,7 @@ export default function Service() {
                 </div>
                 <div className="col-md-4">
                     <div className={`${styles.serviceCard} text-white`}>
-                        <img src="images/cross2.jpg" className="w-100" alt=""/>
+                        <img src={cross} className="w-100" alt=""/>
                         <h4 className="pt-3">Crosswalks detection</h4>
 
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit illo delectus repellat error
