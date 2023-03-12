@@ -1,5 +1,7 @@
 import React from 'react'
 import styles from './Service.module.css'
+import lane from '../images/lane.jpeg'
+
 export default function Service() {
   return (
     <section id="services" className={styles.services}>
@@ -8,7 +10,7 @@ export default function Service() {
             <div className="row justify-content-center gy-3">
                 <div className="col-md-4">
                     <div className={`${styles.serviceCard} text-white`}>
-                        <img src="../images/lane.jpeg" className="w-100" alt=""/>
+                        <img src={lane} className="w-100" alt=""/>
                         <h4 className="pt-3">Lane detection</h4>
 
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit illo delectus repellat error
