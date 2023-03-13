@@ -9,22 +9,36 @@ export default function Home() {
   let [phoneInput, setPhoneInput] = useState(`d-none`)
   let [registerInput, setRegisterInput] = useState(`d-none`)
   let [loginInput, setLoginInput] = useState(`d-inline-block`)
-  let [homeBtn, setHomeBtn] = useState(`Join Us`)
+  let [loggedBtn, setloggedBtn] = useState(`d-none`)
+  let [SignBtn, setSignBtn] = useState(``)
   
   let modelRef = useRef()
-
+  let Popup1Ref = useRef()
+  let Popup2Ref = useRef()
+  let active = styles.loginBtn
+  
   const toggleModel = () => {
     setModel(!model)
   }
   useEffect(() => {
-    let handler = (e) => {
-      if (!modelRef.current.contains(e.target)) {
-        console.log(e.target)
+    const event = (e) => {
+      if (model&&!modelRef.current.contains(e.target)) { 
         setModel(false)
       }
-
+      else if(model && (Popup1Ref.current.contains(e.target) || (Popup2Ref.current.contains(e.target))))
+      {
+        setModel(false)
+        setloggedBtn("")
+        setSignBtn("d-none")
+      }
+      
     }
-    document.addEventListener('mousedown', handler)
+    document.addEventListener('click', event,true)
+    
+    return()=>{
+      document.removeEventListener('click', event,true)
+    }
+  
   })
 
   function login() {
@@ -32,7 +46,7 @@ export default function Home() {
     setPhoneInput(`d-none`)
     setRegisterInput(`d-none`)
     setLoginInput(`d-inline-block`)
-    setLoginColor(`${registercolor}`)
+    setLoginColor(`${active}`)
     setRegisterColor(``)
     document.getElementById('welcomeParagraph').innerHTML = `<h3 class="text-center my-2 fs-4">Welcome</h3>
     <p class="hh text-center my-2 fs-4">Login to unlock the power of detection</p>`
@@ -40,17 +54,15 @@ export default function Home() {
   function Register() {
     setEmailInput(`d-block`)
     setPhoneInput(`d-block`)
-    setRegisterInput(`${loginInput}`)
-    setLoginInput(`${registerInput}`)
+    setRegisterInput(`d-inline-block`)
+    setLoginInput(`d-none`)
     setLoginColor(``)
-    setRegisterColor(`${logincolor}`)
+    setRegisterColor(`${active}`)
     document.getElementById('welcomeParagraph').innerHTML = `<h3 class="text-center my-2 fs-4">Welcome</h3>
     <p class="hh text-center my-2 fs-4">Please register to enjoy our app</p>`
   }
 
-  function sign() {
-    setHomeBtn(`Get Started`)
-  }
+  
 
   return <>
     <header id="home" className="container-fluid d-flex justify-content-center align-items-center">
@@ -62,7 +74,9 @@ export default function Home() {
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
         </div>
 
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5`} onClick={toggleModel}>{homeBtn}</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${SignBtn}`} onClick={toggleModel}>Join us</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${loggedBtn}`} >Get Started</button>
+        
       </div>
 
       {model && (
@@ -83,8 +97,11 @@ export default function Home() {
 
               <div className='w-75 m-auto'>
                 <div>
-                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} onClick={sign}>login</button>
-                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${registerInput}`} onClick={sign}>Register</button>
+                  <div >
+                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} ref={Popup1Ref} >login</button>
+                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${registerInput}`} ref={Popup2Ref} >Register</button>
+                  </div>
+                  
 
                   <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75`}>
                     <div className="d-flex justify-content-center align-items-center">
