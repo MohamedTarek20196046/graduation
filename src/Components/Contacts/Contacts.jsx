@@ -4,7 +4,7 @@ export default function Contacts() {
   return (
    <>
    <section id="contact" className={styles.contact}>
-        <div className="container text-center p-4 ">
+        <div className="container  w-50 text-center p-4 ">
             <h3 className="text-center my-md-4">Contact Us</h3>
             <form action="" className="rounded p-4">
                 <div className="row gy-3">

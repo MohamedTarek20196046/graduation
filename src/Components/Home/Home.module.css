@@ -2,7 +2,7 @@ header
 {
     background-image: url(../images/Rectangle\ 5.png);
     min-height: 100vh;
-    
+    background-size: cover;
     background-position: center center;
 }
 
@@ -19,4 +19,48 @@ header
     border: 1px solid #2A6582 !important;
     color: #4BD1FF !important;
 }
+.hh
+{
+    letter-spacing: 1px;
+}
 
+.popUp
+{
+    background-color: #314164;
+}
+
+.popUp .formControl
+{
+    background-color: #465578 !important;
+    border: 0px;
+    color: white !important;
+    
+}
+
+.popUp .formControl::placeholder { 
+    color: #4BD1FF !important;
+    opacity: 0.4;
+    
+}
+
+.registerBtn
+{
+    background-color: #314164;
+}
+
+.loginBtn
+{
+    background-color: #2A6582 !important;
+}
+
+.submitBtn
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+    border: none !important;
+    
+    padding: 10px 30px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+   margin-left: auto !important;
+}
