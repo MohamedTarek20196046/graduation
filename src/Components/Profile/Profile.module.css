@@ -1,0 +1,34 @@
+body
+{
+    background-color: #1E2846 !important;
+}
+.userProf
+{
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.profile
+{
+    background-color: #465578;
+    border-radius: 3px;
+}
+
+.userProf .formControl
+{
+    background-color: #1E2846 !important;
+
+}
+
+
+.editbtn
+{ background-color: #1E2846 !important;
+    color: white !important;
+
+}
+
+.editbtn:hover
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+}
