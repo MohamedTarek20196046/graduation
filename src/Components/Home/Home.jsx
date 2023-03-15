@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-
+import axios from 'axios'
 import styles from './Home.module.css'
 import About from '../About/About'
 import Service from '../Service/Service'
@@ -21,7 +21,10 @@ export default function Home() {
   let Popup1Ref = useRef()
   let Popup2Ref = useRef()
   let active = styles.loginBtn
- 
+  const [NameReg, setNameReg]=useState('')
+  const [passwordReg, setPasswordReg]=useState('')
+  const [EmailReg, setEmailReg]=useState('')
+  const [PhonenumberReg, setPhonenumberReg]=useState('')
   const toggleModel = () => {
     setModel(!model)
   }
@@ -30,11 +33,40 @@ export default function Home() {
       if (model&&!modelRef.current.contains(e.target)) { 
         setModel(false)
       }
-      else if(model && (Popup1Ref.current.contains(e.target) || (Popup2Ref.current.contains(e.target))))
+      else if(model && (Popup1Ref.current.contains(e.target) ))
       {
         setModel(false)
         setloggedBtn("")
         setSignBtn("d-none")
+       
+      }
+      else if(model && (Popup2Ref.current.contains(e.target)))
+      {
+        console.log(typeof(PhonenumberReg))
+        if(!PhonenumberReg.match("[0-9]+"))
+        {
+          alert("Please enter your Phonenumber correctly!!!")
+        }
+        else
+          {
+          setModel(false)
+          setloggedBtn("")
+          setSignBtn("d-none")
+          console.log(NameReg);
+          console.log(passwordReg);
+          console.log(EmailReg);
+          console.log(PhonenumberReg);
+           axios.post("http://localhost:3001/register",{ 
+          Name: NameReg,
+          Password: passwordReg,
+          email: EmailReg,
+          Phonenumber: PhonenumberReg
+            
+        }).then((Response)=>{
+          console.log(Response)
+        })
+        }
+       
       }
       
     }
@@ -45,6 +77,8 @@ export default function Home() {
     }
   
   })
+
+  
 
   function login() {
     setEmailInput(`d-none`)
@@ -95,11 +129,10 @@ export default function Home() {
             </div>
             <form action="" className="rounded p-4 w-100  text-center">
 
-              <input type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Enter Email" />
-              <input className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="text" placeholder="Enter Password" />
-              <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${emailInput}`} type="text" placeholder="Enter address" />
-              <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${phoneInput} `} type="text" placeholder="Enter phone" />
-
+            <input type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name"  onChange={(e)=>{setNameReg(e.target.value)}}/>
+            <input className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="text" placeholder="Please enter your Password" onChange={(e)=>{setPasswordReg(e.target.value)}}/>
+            <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${emailInput}`} type="text" placeholder="Please enter your address" onChange={(e)=>{setEmailReg(e.target.value)}}/>
+            <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${phoneInput} `} type="text" placeholder="Please enter your Phonenumber" onChange={(e)=>{setPhonenumberReg(e.target.value)}}/>
               <div className='w-75 m-auto'>
                 <div>
                   <div >
