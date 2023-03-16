@@ -16,7 +16,7 @@ export default function Home() {
   let [loginInput, setLoginInput] = useState(`d-inline-block`)
   let [loggedBtn, setloggedBtn] = useState(`d-none`)
   let [SignBtn, setSignBtn] = useState(``)
-  
+ 
   let modelRef = useRef()
   let Popup1Ref = useRef()
   let Popup2Ref = useRef()
@@ -25,6 +25,10 @@ export default function Home() {
   const [passwordReg, setPasswordReg]=useState('')
   const [EmailReg, setEmailReg]=useState('')
   const [PhonenumberReg, setPhonenumberReg]=useState('')
+  const [userName, setUserName]=useState('')
+  const [userPass, setUserPassword]=useState('')
+  const [LoginStatus, setLoginStatus]=useState('')
+  
   const toggleModel = () => {
     setModel(!model)
   }
@@ -35,10 +39,25 @@ export default function Home() {
       }
       else if(model && (Popup1Ref.current.contains(e.target) ))
       {
-        setModel(false)
-        setloggedBtn("")
-        setSignBtn("d-none")
-       
+        axios.post("http://localhost:3001/login",{ 
+          Name: userName,
+          Password: userPass
+        }).then((response)=>{
+          if(response.data.message)
+          {
+            alert(response.data.message)
+            console.log(response.data.message)
+            setLoginStatus(response.data.message)
+          }
+          else{
+            setModel(false)
+            setloggedBtn("")
+            setSignBtn("d-none")
+            setLoginStatus(response.data[0].name)
+            console.log(response.data[0].name)
+          }
+        })   
+        
       }
       else if(model && (Popup2Ref.current.contains(e.target)))
       {
@@ -79,7 +98,6 @@ export default function Home() {
   })
 
   
-
   function login() {
     setEmailInput(`d-none`)
     setPhoneInput(`d-none`)
@@ -100,7 +118,7 @@ export default function Home() {
     document.getElementById('welcomeParagraph').innerHTML = `<h3 class="text-center my-2 fs-4">Welcome</h3>
     <p class="hh text-center my-2 fs-4">Please register to enjoy our app</p>`
   }
-
+  
   
 
   return <>
@@ -129,14 +147,14 @@ export default function Home() {
             </div>
             <form action="" className="rounded p-4 w-100  text-center">
 
-            <input type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name"  onChange={(e)=>{setNameReg(e.target.value)}}/>
-            <input className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="text" placeholder="Please enter your Password" onChange={(e)=>{setPasswordReg(e.target.value)}}/>
+            <input type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name"  onChange={(e)=>{setNameReg(e.target.value); setUserName(e.target.value)}}/>
+            <input className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="password" placeholder="Please enter your Password" onChange={(e)=>{setPasswordReg(e.target.value);setUserPassword(e.target.value)}}/>
             <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${emailInput}`} type="text" placeholder="Please enter your address" onChange={(e)=>{setEmailReg(e.target.value)}}/>
             <input className={`form-control w-75 mb-3 m-auto ${styles.formControl} ${phoneInput} `} type="text" placeholder="Please enter your Phonenumber" onChange={(e)=>{setPhonenumberReg(e.target.value)}}/>
               <div className='w-75 m-auto'>
                 <div>
                   <div >
-                  <button  className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} ref={Popup1Ref} >login</button>
+                  <button  className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} ref={Popup1Ref}  >login</button>
                   <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${registerInput}`} ref={Popup2Ref } >Register</button>
                   </div>
                   
