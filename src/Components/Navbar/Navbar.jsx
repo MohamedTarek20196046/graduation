@@ -2,12 +2,13 @@ import React from 'react'
 import style from './Navbar.module.css'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-export default function Navbar() {
 
-    
-
+export default function Navbar(props) {
+         let temp = props.type
     return (
         <>
+          
+           
             <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
                 <div className="container">
                     <Link className={`navbar-brand ${style.logo}`} to="/Home">Code Hub</Link>
@@ -39,9 +40,9 @@ export default function Navbar() {
                                 <a className="nav-link text-white" aria-current="page" href="#contact">Contact</a>
                             </li>
                             <li className="nav-item">
-                                <Link className={`nav-link text-white`} aria-current="page" to="/profile">
+                                <Link className={`nav-link text-white ${props.view}`} aria-current="page" to="/profile">
                                     <i className="fa-solid fa-user-large"></i>
-                                    Username
+                                    {temp}
                                 </Link>
                             </li>
 
@@ -51,6 +52,8 @@ export default function Navbar() {
                 </div>
             </nav>
 
+        
+            
         </>
     )
 }

@@ -2,9 +2,11 @@ import React from 'react'
 import styles from './Profile.module.css'
 import cross from '../images/cross2.jpg'
 import hasbik from '../images/CM229-2.jpg'
+import Navbar from '../Navbar/Navbar'
 export default function Profile() {
   return (
     <>
+    <Navbar />
      <section className={`container p-5 my-3 ${styles.profile}`}>
         <h3 className="text-center text-white mb-4">My Profile</h3>
         <div className={`row p-4 ${styles.userProf}`}>

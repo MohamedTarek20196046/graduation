@@ -4,9 +4,10 @@ import styles from './Home.module.css'
 import About from '../About/About'
 import Service from '../Service/Service'
 import Contacts from '../Contacts/Contacts'
-
+import Navbar from '../Navbar/Navbar'
 
 export default function Home() {
+  
   const [model, setModel] = useState(false)
   let [logincolor, setLoginColor] = useState(`${styles.loginBtn}`)
   let [registercolor, setRegisterColor] = useState(``)
@@ -28,7 +29,11 @@ export default function Home() {
   const [userName, setUserName]=useState('')
   const [userPass, setUserPassword]=useState('')
   const [LoginStatus, setLoginStatus]=useState('')
-  
+
+
+   {/* states for navbar */ }
+   const [viewProfile, setviewProfile]=useState('d-none')
+
   const toggleModel = () => {
     setModel(!model)
   }
@@ -56,6 +61,7 @@ export default function Home() {
             setModel(false)
             setloggedBtn("")
             setSignBtn("d-none")
+            setviewProfile("")
             setLoginStatus(response.data[0].name)
             
           }
@@ -74,6 +80,8 @@ export default function Home() {
           setModel(false)
           setloggedBtn("")
           setSignBtn("d-none")
+          setviewProfile("")
+          setLoginStatus(NameReg)
           console.log(NameReg);
           console.log(passwordReg);
           console.log(EmailReg);
@@ -129,6 +137,7 @@ export default function Home() {
   
 
   return <>
+  <Navbar type={LoginStatus} view ={viewProfile}/>
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
