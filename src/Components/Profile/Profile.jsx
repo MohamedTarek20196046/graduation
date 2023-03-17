@@ -3,10 +3,15 @@ import styles from './Profile.module.css'
 import cross from '../images/cross2.jpg'
 import hasbik from '../images/CM229-2.jpg'
 import Navbar from '../Navbar/Navbar'
+import { Link } from 'react-router-dom'
 export default function Profile() {
+    localStorage.setItem('actions','d-none')
+    const click = () => {
+        localStorage.clear();
+      }
   return (
     <>
-    <Navbar />
+     <Navbar />
      <section className={`container p-5 my-3 ${styles.profile}`}>
         <h3 className="text-center text-white mb-4">My Profile</h3>
         <div className={`row p-4 ${styles.userProf}`}>
@@ -35,7 +40,7 @@ export default function Profile() {
             <div className="col-md-4"><img src={cross} className="w-100" alt=""/></div>
             <div className="col-md-4"><img src={cross} className="w-100" alt=""/></div>
         </div>
-
+        <button onClick={click}><Link to="/Home">delete</Link></button>
     </section>
     </>
   )

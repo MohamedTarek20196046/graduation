@@ -3,8 +3,12 @@ import style from './Navbar.module.css'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar(props) {
-         let temp = props.type
+export default function Navbar() {
+    
+    let [Viewtabs, setViewtabs] = useState(``)
+    const click = (event) => {
+        setViewtabs('d-none')
+      }
     return (
         <>
           
@@ -22,7 +26,7 @@ export default function Navbar(props) {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active text-white" aria-current="page" href="#Home">Home</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`}  aria-current="page" href="#Home">Home</a>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link active text-white d-none" aria-current="page" >Live Tracking</Link>
@@ -31,18 +35,18 @@ export default function Navbar(props) {
                                 <Link className="nav-link active text-white d-none" aria-current="page" >static Tracking</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#about">About</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#about">About</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#services">Services</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#services">Services</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#contact">Contact</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#contact">Contact</a>
                             </li>
                             <li className="nav-item">
-                                <Link className={`nav-link text-white ${props.view}`} aria-current="page" to="/profile">
+                                <Link className={`nav-link text-white ${localStorage.getItem('viewProfile')}`} aria-current="page"  to="/profile" >
                                     <i className="fa-solid fa-user-large"></i>
-                                    {temp}
+                                    {localStorage.getItem('loginstatus')}
                                 </Link>
                             </li>
 

@@ -15,8 +15,7 @@ export default function Home() {
   let [phoneInput, setPhoneInput] = useState(`d-none`)
   let [registerInput, setRegisterInput] = useState(`d-none`)
   let [loginInput, setLoginInput] = useState(`d-inline-block`)
-  let [loggedBtn, setloggedBtn] = useState(`d-none`)
-  let [SignBtn, setSignBtn] = useState(``)
+
  
   let modelRef = useRef()
   let Popup1Ref = useRef()
@@ -28,11 +27,22 @@ export default function Home() {
   const [PhonenumberReg, setPhonenumberReg]=useState('')
   const [userName, setUserName]=useState('')
   const [userPass, setUserPassword]=useState('')
-  const [LoginStatus, setLoginStatus]=useState('')
 
+  localStorage.setItem('actions','')
+  if(localStorage.getItem('viewProfile')===null)
+  {
+    localStorage.setItem('viewProfile','d-none')
+  }
+  if(localStorage.getItem('loginbtn')===null)
+  {
+    localStorage.setItem('loginbtn','d-none')
+  }
+  if(localStorage.getItem('Signbtn')===null)
+  {
+    localStorage.setItem('Signbtn','')
+  }
 
-   {/* states for navbar */ }
-   const [viewProfile, setviewProfile]=useState('d-none')
+   
 
   const toggleModel = () => {
     setModel(!model)
@@ -54,16 +64,13 @@ export default function Home() {
             
             alert(response.data.message)
             console.log(response.data.message)
-            setLoginStatus(response.data.message)
           }
           else{
-           
             setModel(false)
-            setloggedBtn("")
-            setSignBtn("d-none")
-            setviewProfile("")
-            setLoginStatus(response.data[0].name)
-            
+            localStorage.setItem('Signbtn','d-none')
+            localStorage.setItem('loginbtn','')
+            localStorage.setItem('loginstatus',response.data[0].name)
+            localStorage.setItem('viewProfile',"")
           }
         })   
         
@@ -77,11 +84,11 @@ export default function Home() {
         }
         else
           {
-          setModel(false)
-          setloggedBtn("")
-          setSignBtn("d-none")
-          setviewProfile("")
-          setLoginStatus(NameReg)
+          setModel(false) 
+          localStorage.setItem('Signbtn','d-none')
+          localStorage.setItem('loginbtn','')
+          localStorage.setItem('loginstatus',NameReg)
+          localStorage.setItem('viewProfile',"")
           console.log(NameReg);
           console.log(passwordReg);
           console.log(EmailReg);
@@ -137,7 +144,7 @@ export default function Home() {
   
 
   return <>
-  <Navbar type={LoginStatus} view ={viewProfile}/>
+  <Navbar />
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
@@ -147,8 +154,8 @@ export default function Home() {
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
         </div>
 
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${SignBtn}`} onClick={toggleModel}>Join us</button>
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${loggedBtn}`} >Get Started</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('Signbtn')}`} onClick={toggleModel}>Join us</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('loginbtn')}`} >Get Started</button>
         
       </div>
 
