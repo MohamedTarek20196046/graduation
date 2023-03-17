@@ -10,7 +10,7 @@ export default function Navbar() {
         <>
             <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
                 <div className="container">
-                    <a className={`navbar-brand ${style.logo}`} href="#home">Code Hub</a>
+                    <Link className={`navbar-brand ${style.logo}`} to="/Home">Code Hub</Link>
                     <button className={`navbar-toggler ${style.togglerColor}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -21,7 +21,7 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active text-white" aria-current="page" to="/home">Home</Link>
+                                <a className="nav-link active text-white" aria-current="page" href="#Home">Home</a>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link active text-white d-none" aria-current="page" >Live Tracking</Link>

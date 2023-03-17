@@ -39,22 +39,25 @@ export default function Home() {
       }
       else if(model && (Popup1Ref.current.contains(e.target) ))
       {
+        
         axios.post("http://localhost:3001/login",{ 
           Name: userName,
           Password: userPass
         }).then((response)=>{
           if(response.data.message)
           {
+            
             alert(response.data.message)
             console.log(response.data.message)
             setLoginStatus(response.data.message)
           }
           else{
+           
             setModel(false)
             setloggedBtn("")
             setSignBtn("d-none")
             setLoginStatus(response.data[0].name)
-            console.log(response.data[0].name)
+            
           }
         })   
         
@@ -119,10 +122,14 @@ export default function Home() {
     <p class="hh text-center my-2 fs-4">Please register to enjoy our app</p>`
   }
   
+ const handlesubmit =(event) =>{
+
+    event.preventDefault()
+  }
   
 
   return <>
-    <header  className="container-fluid d-flex justify-content-center align-items-center">
+    <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
         <h2 className="my-3">I am your Smart recognition system</h2>
@@ -145,7 +152,7 @@ export default function Home() {
               <h3 className="text-center my-2 fs-4">Welcome</h3>
               <p className="hh text-center my-2 fs-4">Login to unlock the power of detection</p>
             </div>
-            <form action="" className="rounded p-4 w-100  text-center">
+            <form action="" className="rounded p-4 w-100  text-center" onSubmit={handlesubmit}>
 
             <input type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name"  onChange={(e)=>{setNameReg(e.target.value); setUserName(e.target.value)}}/>
             <input className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="password" placeholder="Please enter your Password" onChange={(e)=>{setPasswordReg(e.target.value);setUserPassword(e.target.value)}}/>
@@ -154,8 +161,8 @@ export default function Home() {
               <div className='w-75 m-auto'>
                 <div>
                   <div >
-                  <button  className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} ref={Popup1Ref}  >login</button>
-                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${registerInput}`} ref={Popup2Ref } >Register</button>
+                  <button  className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${loginInput}`} ref={Popup1Ref} type="submit" >login</button>
+                  <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 ${registerInput}`} ref={Popup2Ref }  type="submit">Register</button>
                   </div>
                   
 
