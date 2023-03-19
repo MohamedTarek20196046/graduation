@@ -2,7 +2,7 @@ import React from 'react'
 import style from './Navbar.module.css'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-export default function Navbar() {
+export default function Navbar({userData}) {
 
     
 
@@ -38,12 +38,12 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <a className="nav-link text-white" aria-current="page" href="#contact">Contact</a>
                             </li>
-                            <li className="nav-item">
+                           {userData? <li className="nav-item">
                                 <Link className={`nav-link text-white`} aria-current="page" to="/profile">
                                     <i className="fa-solid fa-user-large"></i>
-                                    Username
+                                    {userData.Name}
                                 </Link>
-                            </li>
+                            </li>:''}
 
                         </ul>
 
