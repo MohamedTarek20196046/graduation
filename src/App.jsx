@@ -1,30 +1,31 @@
-import React, { Component, useState } from 'react'
-import Footer from './Components/Footer/Footer'
+import React from 'react'
 import Home from './Components/Home/Home'
-import Navbar from './Components/Navbar/Navbar'
 import Profile from './Components/Profile/Profile'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import Layout from './Components/Layout/Layout'
 import jwtDecode from 'jwt-decode'
 
 export default function App () {
-  const [userData, setuserData] = useState(null)
+ 
 
   function saveUserData()
   {
     let encodedToken = localStorage.getItem('userToken');
-    
     let decodedToken = jwtDecode(encodedToken);
-    console.log(decodedToken);//
     
-    setuserData(decodedToken);
+   
+    localStorage.setItem('username',decodedToken.Name)
+    localStorage.setItem('password',decodedToken.Password)
+    localStorage.setItem('email',decodedToken.email)
+    localStorage.setItem('phonenumber',decodedToken.phonenumber)
+    
   }
 
   let routers = createBrowserRouter([
-    {path:'/',element:<Layout userData={userData}/>,children:[
+    {path:'/',element:<Layout />,children:[
       {index:true,element:<Home saveUserData={saveUserData}/>},
       {path:'home',element:<Home saveUserData={saveUserData}/>},
-      {path:'profile',element:<Profile userData={userData}/>}
+      {path:'profile',element:<Profile/>}
     ]}
   ])
  

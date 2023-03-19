@@ -1,16 +1,18 @@
 import React from 'react'
 import style from './Navbar.module.css'
-import { useState } from 'react'
+
 import { Link } from 'react-router-dom'
-export default function Navbar({userData}) {
 
+export default function Navbar() {
     
-
+    
     return (
         <>
+          
+           
             <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
                 <div className="container">
-                    <a className={`navbar-brand ${style.logo}`} href="#home">Code Hub</a>
+                    <Link className={`navbar-brand ${style.logo}`} to="/Home">Code Hub</Link>
                     <button className={`navbar-toggler ${style.togglerColor}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -21,7 +23,7 @@ export default function Navbar({userData}) {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active text-white" aria-current="page" to="/home">Home</Link>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`}  aria-current="page" href="#Home">Home</a>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link active text-white d-none" aria-current="page" >Live Tracking</Link>
@@ -30,27 +32,29 @@ export default function Navbar({userData}) {
                                 <Link className="nav-link active text-white d-none" aria-current="page" >static Tracking</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#about">About</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#about">About</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#services">Services</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#services">Services</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-white" aria-current="page" href="#contact">Contact</a>
+                                <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#contact">Contact</a>
                             </li>
-                           {userData? <li className="nav-item">
-                                <Link className={`nav-link text-white`} aria-current="page" to="/profile">
+                            <li className="nav-item">
+                            <Link className={`nav-link text-white ${localStorage.getItem('viewProfile')}`} aria-current="page"  to="/profile" >
                                     <i className="fa-solid fa-user-large"></i>
-                                    {userData.Name}
+                                    {localStorage.getItem('username')}
                                 </Link>
-                            </li>:''}
-
+                            </li>
+                            
                         </ul>
 
                     </div>
                 </div>
             </nav>
 
+        
+            
         </>
     )
 }

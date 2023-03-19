@@ -5,7 +5,7 @@ import About from '../About/About'
 import Service from '../Service/Service'
 import Contacts from '../Contacts/Contacts'
 import Joi from 'joi'
-
+import Navbar from '../Navbar/Navbar'
 
 export default function Home({saveUserData}) {
   const [model, setModel] = useState(false)
@@ -13,8 +13,22 @@ export default function Home({saveUserData}) {
   let [registercolor, setRegisterColor] = useState(``)
   const [loginForm, setloginForm] = useState('d-block')
   const [registerForm, setregisterForm] = useState('d-none')
-  let [loggedBtn, setloggedBtn] = useState(`d-none`)
-  let [SignBtn, setSignBtn] = useState(``)
+
+
+  localStorage.setItem('actions','')
+  if(localStorage.getItem('viewProfile')===null)
+  {
+    localStorage.setItem('viewProfile','d-none')
+  }
+  if(localStorage.getItem('loginbtn')===null)
+  {
+    localStorage.setItem('loginbtn','d-none')
+  }
+  if(localStorage.getItem('Signbtn')===null)
+  {
+    localStorage.setItem('Signbtn','')
+  }
+
 
   let modelRef = useRef()
   let Popup1Ref = useRef()
@@ -46,7 +60,6 @@ export default function Home({saveUserData}) {
       }
       else if (model && (Popup1Ref.current.contains(e.target))) {
         submitLogin(e)
-
       }
 
 
@@ -80,7 +93,7 @@ export default function Home({saveUserData}) {
     let myUser = { ...user }
     myUser[event.target.name] = event.target.value;
     setUser(myUser);
-    console.log(myUser);
+    
 
   }
   function getUserLoginData(event) {
@@ -96,14 +109,9 @@ export default function Home({saveUserData}) {
     let { data } = await axios.post("http://localhost:3001/register", user);
     if (data.message === 'success') {
       login()
-      setloggedBtn("")
-      setSignBtn("d-none")
-
     }
     else {
       seterrorRegister(data.message)
-
-
     }
   }
   async function sendLoginDatatoApi() {
@@ -111,12 +119,14 @@ export default function Home({saveUserData}) {
     let { data } = await axios.post("http://localhost:3001/login", userLogin);
     if (data.message === 'success') {
       localStorage.setItem('userToken',data.token);
-      
-      saveUserData()
+      saveUserData() 
       setModel(false)
-      setloggedBtn("")
-      setSignBtn("d-none")
-
+      localStorage.setItem('viewProfile','')
+      localStorage.setItem('loginbtn','')
+      localStorage.setItem('Signbtn','d-none')
+     
+      
+      
     }
     else {
       //seterrorRegister(data.message)
@@ -181,7 +191,8 @@ export default function Home({saveUserData}) {
   //console.log(errorListLogin.filter((err) => err.context.label === 'Name'));
 
   return <>
-    <header className="container-fluid d-flex justify-content-center align-items-center">
+  <Navbar />
+    <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
         <h2 className="my-3">I am your Smart recognition system</h2>
@@ -190,8 +201,8 @@ export default function Home({saveUserData}) {
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
         </div>
 
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${SignBtn}`} onClick={toggleModel}>Join us</button>
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${loggedBtn}`} >Get Started</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('Signbtn')}`} onClick={toggleModel}>Join us</button>
+        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('loginbtn')}`} >Get Started</button>
 
       </div>
 
