@@ -6,6 +6,7 @@ import Service from '../Service/Service'
 import Contacts from '../Contacts/Contacts'
 import Joi from 'joi'
 import Navbar from '../Navbar/Navbar'
+import { async } from 'q'
 
 export default function Home({saveUserData}) {
   const [model, setModel] = useState(false)
@@ -42,7 +43,7 @@ export default function Home({saveUserData}) {
 
   })
   const [userLogin, setUserLogin] = useState({
-    Name: '',
+    email: '',
     Password: '',
   })
   const [errorRegister, seterrorRegister] = useState('')
@@ -104,8 +105,19 @@ export default function Home({saveUserData}) {
   }
 
 
-  async function sendRegisterDatatoApi() {
+  async function check()
+  {
+    let { data } = await axios.post("http://localhost:3001/check", user);
+    if (data.message === 'not found') {
+      sendRegisterDatatoApi()
+    }
+    else {
+      alert("email already used")
+    }
+  }
 
+  async function sendRegisterDatatoApi() {
+    
     let { data } = await axios.post("http://localhost:3001/register", user);
     if (data.message === 'success') {
       login()
@@ -113,6 +125,8 @@ export default function Home({saveUserData}) {
     else {
       seterrorRegister(data.message)
     }
+    
+    
   }
   async function sendLoginDatatoApi() {
 
@@ -148,7 +162,7 @@ export default function Home({saveUserData}) {
 
     }
     else {
-      sendRegisterDatatoApi();
+      check();
     }
 
   }
@@ -180,7 +194,7 @@ export default function Home({saveUserData}) {
   }
   function validateLoginForm() {
     let scheme2 = Joi.object({
-      Name: Joi.string().min(3).max(30).required(),
+      email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
 
       Password: Joi.string().min(3).max(30).required()
     })
@@ -266,10 +280,10 @@ export default function Home({saveUserData}) {
 
             <form onSubmit={submitLogin} action="" className={`rounded ${loginForm} pb-2 w-100  text-center`}>
               {/* {error.length > 0 ? <div className="alert alert-danger p-0">{error}</div> : ''} */}
-              <input name='Name' className={`form-control w-75 mb-3 m-auto ${styles.formControl} `} type="text" placeholder="Please enter your Name" onChange={getUserLoginData} />
+              <input name='email' className={`form-control w-75 mb-3 m-auto ${styles.formControl} `} type="email" placeholder="Please enter your email" onChange={getUserLoginData} />
 
-              {errorListLogin.filter((err) => err.context.label === 'Name')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
-                <p>{errorListLogin.filter((err) => err.context.label === 'Name')[0]?.message}</p>
+              {errorListLogin.filter((err) => err.context.label === 'email')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
+                <p>{errorListLogin.filter((err) => err.context.label === 'email')[0]?.message}</p>
               </div> : ''}
 
 
