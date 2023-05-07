@@ -8,7 +8,7 @@ import Joi from 'joi'
 import Navbar from '../Navbar/Navbar'
 import { async } from 'q'
 
-export default function Home({saveUserData}) {
+export default function Home({ saveUserData }) {
   const [model, setModel] = useState(false)
   let [logincolor, setLoginColor] = useState(`${styles.loginBtn}`)
   let [registercolor, setRegisterColor] = useState(``)
@@ -16,18 +16,15 @@ export default function Home({saveUserData}) {
   const [registerForm, setregisterForm] = useState('d-none')
 
 
-  localStorage.setItem('actions','')
-  if(localStorage.getItem('viewProfile')===null)
-  {
-    localStorage.setItem('viewProfile','d-none')
+  localStorage.setItem('actions', '')
+  if (localStorage.getItem('viewProfile') === null) {
+    localStorage.setItem('viewProfile', 'd-none')
   }
-  if(localStorage.getItem('loginbtn')===null)
-  {
-    localStorage.setItem('loginbtn','d-none')
+  if (localStorage.getItem('loginbtn') === null) {
+    localStorage.setItem('loginbtn', 'd-none')
   }
-  if(localStorage.getItem('Signbtn')===null)
-  {
-    localStorage.setItem('Signbtn','')
+  if (localStorage.getItem('Signbtn') === null) {
+    localStorage.setItem('Signbtn', '')
   }
 
 
@@ -39,7 +36,8 @@ export default function Home({saveUserData}) {
     Name: '',
     Password: '',
     email: '',
-    Phonenumber: 0
+    Phonenumber: 0,
+    profile_picture: ''
 
   })
   const [userLogin, setUserLogin] = useState({
@@ -92,10 +90,10 @@ export default function Home({saveUserData}) {
 
   function getUserData(event) {
     let myUser = { ...user }
-    myUser[event.target.name] = event.target.value;
-    setUser(myUser);
-    
+    myUser[event.target.name] =
+      event.target.name === 'profile_picture' ? event.target.files[0] : event.target.value;
 
+    setUser(myUser);
   }
   function getUserLoginData(event) {
     let myUser = { ...userLogin }
@@ -105,8 +103,7 @@ export default function Home({saveUserData}) {
   }
 
 
-  async function check()
-  {
+  async function check() {
     let { data } = await axios.post("http://localhost:3001/check", user);
     if (data.message === 'not found') {
       sendRegisterDatatoApi()
@@ -117,30 +114,47 @@ export default function Home({saveUserData}) {
   }
 
   async function sendRegisterDatatoApi() {
-    
-    let { data } = await axios.post("http://localhost:3001/register", user);
-    if (data.message === 'success') {
-      login()
+    const formData = new FormData();
+    formData.append('Name', user.Name);
+    formData.append('Password', user.Password);
+    formData.append('email', user.email);
+    formData.append('Phonenumber', user.Phonenumber);
+    formData.append('profile_picture', user.profile_picture);
+
+    try {
+      const response = await axios.post('http://localhost:3001/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.data.message === 'success') {
+        login();
+      } else {
+        seterrorRegister(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      seterrorRegister(error.message);
     }
-    else {
-      seterrorRegister(data.message)
-    }
-    
-    
+
+
   }
   async function sendLoginDatatoApi() {
 
     let { data } = await axios.post("http://localhost:3001/login", userLogin);
     if (data.message === 'success') {
-      localStorage.setItem('userToken',data.token);
-      saveUserData() 
+      localStorage.setItem('userToken', data.token);
+       console.log(data);
+      // console.log(data.token);
+      saveUserData()
       setModel(false)
-      localStorage.setItem('viewProfile','')
-      localStorage.setItem('loginbtn','')
-      localStorage.setItem('Signbtn','d-none')
-     
-      
-      
+      localStorage.setItem('viewProfile', '')
+      localStorage.setItem('loginbtn', '')
+      localStorage.setItem('Signbtn', 'd-none')
+
+
+
     }
     else {
       //seterrorRegister(data.message)
@@ -162,8 +176,9 @@ export default function Home({saveUserData}) {
 
     }
     else {
-      check();
+      check()
     }
+
 
   }
   function submitLogin(e) {
@@ -188,7 +203,8 @@ export default function Home({saveUserData}) {
       Name: Joi.string().min(3).max(30).required(),
       email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
       Phonenumber: Joi.number().required(),
-      Password: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/)
+      Password: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/),
+      profile_picture: Joi.optional()
     })
     return scheme.validate(user, { abortEarly: false });
   }
@@ -205,7 +221,7 @@ export default function Home({saveUserData}) {
   //console.log(errorListLogin.filter((err) => err.context.label === 'Name'));
 
   return <>
-  <Navbar />
+    <Navbar />
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
@@ -231,7 +247,7 @@ export default function Home({saveUserData}) {
             </div>
 
 
-            <form onSubmit={submitRegister} action="" className={`rounded ${registerForm} pb-2 w-100  text-center`}>
+            <form onSubmit={submitRegister} action="" className={`rounded ${registerForm} pb-2 w-100  text-center`} encType="multipart/form-data">
               {/* {errorList.map((err, index) => <div key={index} className=" alert alert-danger m-auto mt-5">{err.message}</div>)} */}
               <input name='Name' type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name" onChange={getUserData} />
 
@@ -257,6 +273,11 @@ export default function Home({saveUserData}) {
                 <p>{errorListRegister.filter((err) => err.context.label === 'Phonenumber')[0]?.message}</p>
               </div> : ''}
 
+              <input name='profile_picture' type="file" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please select your ProfilePic" onChange={getUserData} />
+
+              {errorListRegister.filter((err) => err.context.label === 'profile_picture')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
+                <p>{errorListRegister.filter((err) => err.context.label === 'profile_picture')[0]?.message}</p>
+              </div> : ''}
               <div className='w-75 m-auto'>
                 <div>
                   <div >
