@@ -32,8 +32,21 @@
     text-decoration: none !important;
    margin-left: auto !important;
 }
-
+.display1{
+    display: block;
+}
+.display2{
+    display: none;
+}
 .contact form
 {
     border: 1px solid rgba(255,255,255, 0.2) !important;
 }
+@media (max-width: 480px) {
+    .display1{
+        display: none;
+    }
+    .display2{
+        display: block;
+    }
+  }
