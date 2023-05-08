@@ -12,19 +12,13 @@ export default function App () {
   {
     let encodedToken = localStorage.getItem('userToken');
     let decodedToken = jwtDecode(encodedToken);
-    
-    console.log(decodedToken.profile_picture);
-    console.log(decodedToken.Name);
-    console.log(decodedToken.email);
-   
     localStorage.setItem('username',decodedToken.Name)
     localStorage.setItem('password',decodedToken.Password)
     localStorage.setItem('email',decodedToken.email)
     localStorage.setItem('phonenumber',decodedToken.phonenumber)
-    //localStorage.setItem('profile_picture',decodedToken.profile_picture)
+    localStorage.setItem('idusers',decodedToken.idusers)
+    console.log("idusers is : "+decodedToken.idusers);
     localStorage.setItem('profile_picture', JSON.stringify(decodedToken.profile_picture))
-    
-    
   }
 
   let routers = createBrowserRouter([
