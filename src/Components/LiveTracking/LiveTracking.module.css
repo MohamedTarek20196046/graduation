@@ -1,0 +1,55 @@
+body
+{
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1E2846;
+    
+}
+
+
+.camera
+{
+    width: 50%;
+    min-height: 50vh ;
+    border: 3px solid #232D4C;
+    border-radius: 7px;
+}
+.cameraIcon
+{
+    color: #1E2846;
+    font-size: 50px;
+}
+
+.check
+{
+    width: 40%;
+    min-height: 30vh ;
+    border: 3px solid #232D4C;
+    border-radius: 7px;
+
+}
+
+.tracking
+{
+    background-color: #465578;
+    border-radius: 7px;
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
+.trackBtn
+{
+    border-radius: 7px !important;
+    border: #232D4C 2px solid !important;
+    background-color: transparent !important;
+    color: aliceblue !important;
+    transition: all 0.5s !important;
+}
+
+.trackBtn:hover
+{
+    background-color: #232D4C !important;
+    
+    color: #499EC7 !important;
+}
+

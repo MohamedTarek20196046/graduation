@@ -1,4 +1,10 @@
 footer
 {
     background-color: #465578;
+   
+}
+.bb
+{
+    position: absolute;
+    bottom: 0px;
 }

@@ -4,10 +4,11 @@ import styles from './Home.module.css'
 import About from '../About/About'
 import Service from '../Service/Service'
 import Contacts from '../Contacts/Contacts'
+import Footer from '../Footer/Footer'
 import Joi from 'joi'
 import Navbar from '../Navbar/Navbar'
 import { async } from 'q'
-
+import { Link } from 'react-router-dom';
 export default function Home({ saveUserData }) {
   const [model, setModel] = useState(false)
   let [logincolor, setLoginColor] = useState(`${styles.loginBtn}`)
@@ -145,7 +146,7 @@ export default function Home({ saveUserData }) {
     let { data } = await axios.post("http://localhost:3001/login", userLogin);
     if (data.message === 'success') {
       localStorage.setItem('userToken', data.token);
-       console.log(data);
+      console.log(data);
       // console.log(data.token);
       saveUserData()
       setModel(false)
@@ -232,7 +233,10 @@ export default function Home({ saveUserData }) {
         </div>
 
         <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('Signbtn')}`} onClick={toggleModel}>Join us</button>
-        <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('loginbtn')}`} >Get Started</button>
+
+        <Link to="/tracking">
+          <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('loginbtn')}`}>Get Started</button>
+        </Link>
 
       </div>
 
@@ -351,7 +355,7 @@ export default function Home({ saveUserData }) {
     {/* This part is the services part */}
     <Service />
     <Contacts />
-
+    <Footer/>
 
   </>
 

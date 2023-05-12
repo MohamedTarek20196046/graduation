@@ -3,6 +3,7 @@ import styles from './Profile.module.css'
 import cross from '../images/cross2.jpg'
 import hasbik from '../images/CM229-2.jpg'
 import Navbar from '../Navbar/Navbar'
+import Footer from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
@@ -101,6 +102,8 @@ export default function Profile() {
                 </div>
                 <button onClick={click}><Link to="/Home">delete</Link></button>
             </section>
+
+            <Footer/>
         </>
     )
 }
