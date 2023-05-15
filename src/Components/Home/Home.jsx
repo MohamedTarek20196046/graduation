@@ -16,7 +16,7 @@ export default function Home({ saveUserData }) {
   const [loginForm, setloginForm] = useState('d-block')
   const [registerForm, setregisterForm] = useState('d-none')
 
-
+  
   localStorage.setItem('actions', '')
   if (localStorage.getItem('viewProfile') === null) {
     localStorage.setItem('viewProfile', 'd-none')
@@ -234,7 +234,7 @@ export default function Home({ saveUserData }) {
 
         <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('Signbtn')}`} onClick={toggleModel}>Join us</button>
 
-        <Link to="/tracking">
+        <Link to="/livetrack">
           <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('loginbtn')}`}>Get Started</button>
         </Link>
 

@@ -12,6 +12,8 @@ body
 {
     background-color: #465578;
     border-radius: 3px;
+    margin-top: 80px ;
+    margin-bottom: 40px;
 }
 
 .userProf .formControl
@@ -32,3 +34,60 @@ body
     background-color: #2A6582 !important;
     color: white !important;
 }
+
+.display1{
+    display: block;
+}
+.display2{
+    display: none;
+}
+.margin{
+    
+    margin-top: 15px;
+    margin-left: 14%;
+    height: 200px;
+}
+@media (max-width: 480px) {
+    .display1{
+        display: none;
+    }
+    .display2{
+        display: block;
+    }
+    .profile{
+        width: 90%;
+        margin-left: 20px;
+        border-radius: 10px;
+    }
+    .userProf{
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+    .userProf .formControl
+    {
+        background-color: #1E2846 !important;
+        border: #1E2846 !important;
+    }
+    .editbtn
+    { 
+        background-color: #1E2846 !important;
+        color: white !important;
+        margin-left: 25%;
+    }
+    .logout{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 6px;
+        width: 50%;
+        margin-left: 25%;
+        background-color: #1E2846 !important;
+    }
+    .text{
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        background-color: #1E2846 !important;
+        color: rgb(185, 4, 4);
+    }
+  }

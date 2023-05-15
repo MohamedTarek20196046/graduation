@@ -72,7 +72,7 @@ export default function Profile() {
     return (
         <>
             <Navbar />
-            <section className={`container p-5 my-3 ${styles.profile}`}>
+            <section className={`container p-5   ${styles.profile} ${styles.display1}`}>
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row p-4 ${styles.userProf}`}>
                     <div className="col-md-2">
@@ -101,6 +101,46 @@ export default function Profile() {
                     <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
                 </div>
                 <button onClick={click}><Link to="/Home">delete</Link></button>
+            </section>
+
+
+            {/* Mobile view */}
+
+            <section className={` p-5  ${styles.profile}  ${styles.display2}`}>
+                <h3 className="text-center text-white mb-4">My Profile</h3>
+                <div className={`row  ${styles.userProf}`}>
+                    <div className={`col-md-2 `}>
+                        {profilePicture && <img src={profilePicture} alt="profile picture" className={`w-75 rounded-circle $ ${styles.margin}`} />}
+                        {isEditMode && <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />}
+                    </div>
+                    <div className="col-md-10">
+                        <form>
+                            <input className={`form-control ${styles.formControl} w-100  my-4 text-white`} type="text" value={username} disabled={!isEditMode} onChange={(e) => setUsername(e.target.value)} />
+                            <input className={`form-control   ${styles.formControl} w-100 mb-4 text-white`} type="text" value={password} disabled={!isEditMode} onChange={(e) => setPassword(e.target.value)} />
+                            <input className={`form-control  ${styles.formControl} w-100 mb-4 text-white`} type="email" value={email} disabled={!isEditMode} onChange={(e) => setEmail(e.target.value)} />
+                            <input className={`form-control   ${styles.formControl} w-100 mb-4 text-white`} type="number" value={phonenumber} disabled={!isEditMode} onChange={(e) => setPhonenumber(e.target.value)} />
+                            {isEditMode && <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save Changes</button>}
+                        </form>
+                        <button type="button" className={`btn mt-3 mb-3 ${styles.editbtn} rounded-pill w-50 p-3`} onClick={() => setIsEditMode(!isEditMode)}>{isEditMode ? 'Cancel' : 'Edit Profile'}</button>
+                    </div>
+                </div>
+
+                <div className={`row ${styles.userProf} mt-4 gy-3 text-center text-white py-5`}>
+                    <h3>History of uploaded images</h3>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                </div>
+                <br></br>
+                <div className={`${styles.logout} text-center`}>
+                    <Link to="/Home">
+                    <button className={`${styles.text}`} onClick={click} href=''> Logout </button>
+                    </Link>
+                </div>
+                
             </section>
 
             <Footer/>

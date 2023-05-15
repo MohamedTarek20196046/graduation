@@ -53,3 +53,39 @@ body
     color: #499EC7 !important;
 }
 
+
+.display1{
+    display: block;
+}
+.display2{
+    display: none;
+}
+.font{
+    font-size: medium;
+}
+
+@media (max-width: 480px) {
+    .display1{
+        display: none;
+    }
+    .display2{
+        display: block;
+    }
+    .tracking{
+        width: 90%;
+        margin-left: 20px;
+        margin-top: 80px;
+    }
+    .camera{
+        width: 80%;
+        min-height: 25vh ;
+        border: 3px solid #232D4C;
+        border-radius: 7px;
+    }
+    .check{
+        width: 80%;
+        min-height: 30vh ;
+        border: 3px solid #232D4C;
+        border-radius: 7px;
+    }
+  }

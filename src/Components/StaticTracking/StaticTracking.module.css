@@ -64,3 +64,39 @@ body
     border-radius: 20px !important;
     height: 200px;
 }
+.font{
+    font-size: medium;
+}
+.display1{
+    display: block;
+}
+.display2{
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .display1{
+        display: none;
+    }
+    .display2{
+        display: block;
+    }
+    .tracking{
+        width: 90%;
+        margin-left: 20px;
+        margin-top: 80px;
+    }
+    .camera{
+        width: 80% !important;
+        min-height: 25vh !important;
+        border: 3px solid #232D4C !important;
+        border-radius: 7px !important;
+        
+    }
+    .check{
+        width: 80%;
+        min-height: 30vh ;
+        border: 3px solid #232D4C;
+        border-radius: 7px;
+    }
+  }
