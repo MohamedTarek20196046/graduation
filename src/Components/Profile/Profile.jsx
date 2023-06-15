@@ -16,7 +16,7 @@ export default function Profile() {
 
     const [profilePictureUrl, setProfilePictureUrl] = useState(null);
     console.log(localStorage.getItem('userToken'));
-
+   
     useEffect(() => {
         async function fetchProfilePicture() {
             const response = await axios.get(`http://localhost:3001/profile_picture/${localStorage.getItem('idusers')}`, {
@@ -38,10 +38,11 @@ export default function Profile() {
     const [phonenumber, setPhonenumber] = useState(localStorage.getItem('phonenumber'));
     const [profilePicture, setProfilePicture] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-
+    console.log(profilePicture)
     async function handleSaveChanges() {
         const formData = new FormData();
         if (profilePicture) {
+            console.log(profilePicture);
           formData.append('profile_picture', profilePicture);
         } else {
           const oldProfilePictureUrl = localStorage.getItem('profile_picture');
@@ -65,6 +66,7 @@ export default function Profile() {
           localStorage.setItem('email', email);
           localStorage.setItem('phonenumber', phonenumber);
           setIsEditMode(false);
+          window.location.reload(false);
         } catch (error) {
           console.log(error);
         }

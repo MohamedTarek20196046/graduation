@@ -6,7 +6,9 @@ export default function LiveTracking() {
   return (
    <>
    <TrackNav/>
+   
    <div className={`${styles.tracking} container ${styles.display1}`}>
+    
         <div className="text-center w-75 m-auto">
             <p className="text-white fs-3 text-center">Live tracking is a dynamic service where the user will be able to
                 open the camera and detect lane, Sign, traffic lights, crosswalks and pedestrians while your camera is

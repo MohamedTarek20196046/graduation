@@ -88,4 +88,9 @@ body
         border: 3px solid #232D4C;
         border-radius: 7px;
     }
+    .test{
+        margin-top: 100px;
+        color: red;
+        border: 1px solid red;
+    }
   }

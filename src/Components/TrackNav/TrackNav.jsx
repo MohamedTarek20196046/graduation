@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 export default function TrackNav() {
     const navigate = useNavigate();
     if(localStorage.getItem('live')===null){
-        localStorage.setItem('live','text-white')
+        localStorage.setItem('live','text-info')
     }
     if(localStorage.getItem('static')===null){
         localStorage.setItem('static','text-white')
