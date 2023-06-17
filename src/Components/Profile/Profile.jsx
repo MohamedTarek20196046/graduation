@@ -19,7 +19,7 @@ export default function Profile() {
    
     useEffect(() => {
         async function fetchProfilePicture() {
-            const response = await axios.get(`http://localhost:3001/profile_picture/${localStorage.getItem('idusers')}`, {
+            const response = await axios.get(`https://backend-ab6i.onrender.com/profile_picture/${localStorage.getItem('idusers')}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('userToken')}`
                 },
@@ -53,7 +53,7 @@ export default function Profile() {
         formData.append('email', email);
         formData.append('phonenumber', phonenumber);
         try {
-          const result = await axios.put(`http://localhost:3001/users/${localStorage.getItem('idusers')}`, formData, {
+          const result = await axios.put(`https://backend-ab6i.onrender.com/users/${localStorage.getItem('idusers')}`, formData, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('userToken')}`,
               'Content-Type': 'multipart/form-data'

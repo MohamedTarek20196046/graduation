@@ -105,7 +105,7 @@ export default function Home({ saveUserData }) {
 
 
   async function check() {
-    let { data } = await axios.post("http://localhost:3001/check", user);
+    let { data } = await axios.post("https://backend-ab6i.onrender.com/check", user);
     if (data.message === 'not found') {
       sendRegisterDatatoApi()
     }
@@ -123,7 +123,7 @@ export default function Home({ saveUserData }) {
     formData.append('profile_picture', user.profile_picture);
 
     try {
-      const response = await axios.post('http://localhost:3001/register', formData, {
+      const response = await axios.post('https://backend-ab6i.onrender.com/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -143,7 +143,7 @@ export default function Home({ saveUserData }) {
   }
   async function sendLoginDatatoApi() {
 
-    let { data } = await axios.post("http://localhost:3001/login", userLogin);
+    let { data } = await axios.post("https://backend-ab6i.onrender.com/login", userLogin);
     if (data.message === 'success') {
       localStorage.setItem('userToken', data.token);
       console.log(data);
