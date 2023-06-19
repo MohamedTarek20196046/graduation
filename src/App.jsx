@@ -30,7 +30,6 @@ export default function App () {
       {path:'home',element:<Home saveUserData={saveUserData}/>},
       {path:'profile',element:<Profile/>},
       {path:'livetrack',element:<LiveTracking/>},
-      {path:'Livetrack',element:<LiveTracking/>},
       {path:'statictrack',element:<StaticTracking/>},
       {path:'tracking',element:<Tracking/>}
     ]}
