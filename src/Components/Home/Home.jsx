@@ -15,7 +15,8 @@ export default function Home({ saveUserData }) {
   let [registercolor, setRegisterColor] = useState(``)
   const [loginForm, setloginForm] = useState('d-block')
   const [registerForm, setregisterForm] = useState('d-none')
-
+  localStorage.setItem('live','text-info')
+  localStorage.setItem('static','text-white')
   
   localStorage.setItem('actions', '')
   if (localStorage.getItem('viewProfile') === null) {
