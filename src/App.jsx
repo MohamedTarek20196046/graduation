@@ -21,7 +21,7 @@ export default function App () {
     localStorage.setItem('phonenumber',decodedToken.phonenumber)
     localStorage.setItem('idusers',decodedToken.idusers)
     console.log("idusers is : "+decodedToken.idusers);
-    localStorage.setItem('profile_picture', JSON.stringify(decodedToken.profile_picture))
+    localStorage.setItem('profile_picture', decodedToken.profile_picture)
   }
 
   let routers = createBrowserRouter([

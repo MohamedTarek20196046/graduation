@@ -15,22 +15,17 @@ export default function Profile() {
     }
 
     const [profilePictureUrl, setProfilePictureUrl] = useState(null);
-    console.log(localStorage.getItem('userToken'));
    
     useEffect(() => {
         async function fetchProfilePicture() {
             const response = await axios.get(`https://backend-ab6i.onrender.com/profile_picture/${localStorage.getItem('idusers')}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('userToken')}`
-                },
-                responseType: 'blob'
+                responseType: 'text'
             });
-            const pictureUrl = URL.createObjectURL(response.data);
-            setProfilePicture(pictureUrl);
+            setProfilePictureUrl(response.data)
+            localStorage.setItem('profile_picture', response.data)
         }
         fetchProfilePicture();
     }, []);
-    console.log(profilePictureUrl);
 
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [password, setPassword] = useState(localStorage.getItem('password'));
@@ -38,13 +33,20 @@ export default function Profile() {
     const [phonenumber, setPhonenumber] = useState(localStorage.getItem('phonenumber'));
     const [profilePicture, setProfilePicture] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    console.log(profilePicture)
+
+
     async function handleSaveChanges() {
         const formData = new FormData();
         if (profilePicture) {
-            console.log(profilePicture);
-          formData.append('profile_picture', profilePicture);
-        } else {
+        const formData1 = new FormData()
+        formData1.append("file", profilePicture)
+        formData1.append("upload_preset", "qmyra1zh")
+        let response1  = await axios.post("https://api.cloudinary.com/v1_1/djsf0enir/image/upload",formData1)
+        const urla = await response1.data.url
+        console.log("1111 : " +urla)
+        formData.append('profile_picture', urla);
+        } 
+        else {
           const oldProfilePictureUrl = localStorage.getItem('profile_picture');
           formData.append('profile_picture_url', oldProfilePictureUrl);
         }
@@ -54,12 +56,8 @@ export default function Profile() {
         formData.append('phonenumber', phonenumber);
         try {
           const result = await axios.put(`https://backend-ab6i.onrender.com/users/${localStorage.getItem('idusers')}`, formData, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-              'Content-Type': 'multipart/form-data'
-            }
+            responseType: 'text'
           });
-          console.log(result.data);
           // Update local storage with new user information
           localStorage.setItem('username', username);
           localStorage.setItem('password', password);
@@ -78,7 +76,7 @@ export default function Profile() {
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row p-4 ${styles.userProf}`}>
                     <div className="col-md-2">
-                        {profilePicture && <img src={profilePicture} alt="profile picture" className="w-75 rounded-circle" />}
+                        {profilePictureUrl&&<img src={profilePictureUrl} alt="profile picture" className="w-75 rounded-circle" />}
                         {isEditMode && <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />}
                     </div>
                     <div className="col-md-10">

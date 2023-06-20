@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 import styles from './Home.module.css'
 import About from '../About/About'
 import Service from '../Service/Service'
@@ -50,7 +50,10 @@ export default function Home({ saveUserData }) {
   const [errorListRegister, seterrorListRegister] = useState([])
   const [error, seterror] = useState('')
   const [errorListLogin, seterrorListLogin] = useState([])
+  const [image,setImage]= useState('')
+  const [url,setUrl]= useState('')
 
+  const [bool,setBool]= useState('No')
   const toggleModel = () => {
     setModel(!model)
   }
@@ -94,7 +97,11 @@ export default function Home({ saveUserData }) {
     let myUser = { ...user }
     myUser[event.target.name] =
       event.target.name === 'profile_picture' ? event.target.files[0] : event.target.value;
-
+      if(event.target.name === 'profile_picture'){
+        console.log(event.target.files[0]) 
+        setImage(event.target.files[0])
+        setBool('yes')
+      }
     setUser(myUser);
   }
   function getUserLoginData(event) {
@@ -116,12 +123,26 @@ export default function Home({ saveUserData }) {
   }
 
   async function sendRegisterDatatoApi() {
+    console.log("kkk : "+image);
+    const formData1 = new FormData()
     const formData = new FormData();
+    if(bool==="yes"){
+      formData1.append("file", image)
+      formData1.append("upload_preset", "qmyra1zh")
+      let response1  = await axios.post("https://api.cloudinary.com/v1_1/djsf0enir/image/upload",formData1)
+      const urla = await response1.data.url
+      console.log("1111 : " +urla)
+      formData.append('profile_picture', urla);
+    }else{
+      formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1687301327/default_le6jnb.jpg");
+    }
+    
+   
     formData.append('Name', user.Name);
     formData.append('Password', user.Password);
     formData.append('email', user.email);
     formData.append('Phonenumber', user.Phonenumber);
-    formData.append('profile_picture', user.profile_picture);
+    
 
     try {
       const response = await axios.post('https://backend-ab6i.onrender.com/register', formData, {
