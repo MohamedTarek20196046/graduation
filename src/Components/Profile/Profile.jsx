@@ -110,7 +110,7 @@ export default function Profile() {
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row  ${styles.userProf}`}>
                     <div className={`col-md-2 `}>
-                        {profilePicture && <img src={profilePicture} alt="profile picture" className={`w-75 rounded-circle $ ${styles.margin}`} />}
+                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className={`w-75 rounded-circle $ ${styles.margin}`} />}
                         {isEditMode && <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />}
                     </div>
                     <div className="col-md-10">
