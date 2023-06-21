@@ -2,11 +2,13 @@ import React from 'react'
 import styles from './LiveTracking.module.css'
 import TrackNav from '../TrackNav/TrackNav'
 import Footer from '../Footer/Footer'
+import AnimatedPage from '../AnimatedPage'
 export default function LiveTracking() {
   return (
    <>
+  
    <TrackNav/>
-   
+   <AnimatedPage>
    <div className={`${styles.tracking} container ${styles.display1}`}>
     
         <div className="text-center w-75 m-auto">
@@ -107,6 +109,7 @@ export default function LiveTracking() {
 
 
     <Footer/>
+    </AnimatedPage>
    </>
   )
 }

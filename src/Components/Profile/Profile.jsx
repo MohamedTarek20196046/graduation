@@ -7,7 +7,9 @@ import Footer from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
-
+import AnimatedPage from '../AnimatedPage'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Profile() {
     localStorage.setItem('actions', 'd-none')
     const click = () => {
@@ -36,6 +38,16 @@ export default function Profile() {
 
 
     async function handleSaveChanges() {
+        toast.info('your data is updating', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         const formData = new FormData();
         if (profilePicture) {
         const formData1 = new FormData()
@@ -71,7 +83,20 @@ export default function Profile() {
       }
     return (
         <>
+            <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            />
             <Navbar />
+            <AnimatedPage>
             <section className={`container p-5   ${styles.profile} ${styles.display1}`}>
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row p-4 ${styles.userProf}`}>
@@ -144,6 +169,7 @@ export default function Profile() {
             </section>
 
             <Footer/>
+            </AnimatedPage>
         </>
     )
 }

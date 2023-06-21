@@ -9,6 +9,9 @@ import Joi from 'joi'
 import Navbar from '../Navbar/Navbar'
 import { async } from 'q'
 import { Link } from 'react-router-dom';
+import AnimatedPage from '../AnimatedPage'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Home({ saveUserData }) {
   const [model, setModel] = useState(false)
   let [logincolor, setLoginColor] = useState(`${styles.loginBtn}`)
@@ -118,7 +121,17 @@ export default function Home({ saveUserData }) {
       sendRegisterDatatoApi()
     }
     else {
-      alert("email already used")
+      console.log("heheeh")
+      toast.warn('Sorry this email is already used ', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     }
   }
 
@@ -153,6 +166,16 @@ export default function Home({ saveUserData }) {
 
       if (response.data.message === 'success') {
         login();
+        toast.success('Please login to start detecting ',{
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
       } else {
         seterrorRegister(response.data.message);
       }
@@ -175,13 +198,29 @@ export default function Home({ saveUserData }) {
       localStorage.setItem('viewProfile', '')
       localStorage.setItem('loginbtn', '')
       localStorage.setItem('Signbtn', 'd-none')
-
-
-
+      toast.success('Welcome  ' + localStorage.getItem("username") , {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     }
     else {
       //seterrorRegister(data.message)
-
+      toast.error('wrong credentials ', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
       seterror(data.message)
     }
   }
@@ -244,6 +283,19 @@ export default function Home({ saveUserData }) {
   //console.log(errorListLogin.filter((err) => err.context.label === 'Name'));
 
   return <>
+    <ToastContainer
+    position="top-center"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
+    <AnimatedPage>
     <Navbar />
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
@@ -378,7 +430,8 @@ export default function Home({ saveUserData }) {
     <Service />
     <Contacts />
     <Footer/>
-
+    </AnimatedPage>    
+    
   </>
 
 

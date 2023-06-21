@@ -5,20 +5,22 @@ header
     background-size: cover;
     background-position: center center;
 }
-
-.join
-{
+body::-webkit-scrollbar {
+    display: none;
+  }
+  .join {
     background-color: #2A6582 !important;
     color: white !important;
-   
-   
-}
-.join:hover
-{
-    background-color: transparent !important;
-    border: 1px solid #2A6582 !important;
-    color: #4BD1FF !important;
-}
+    transition: transform 0.3s ease-in-out, background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+  
+  .join:hover {
+    transform: translateY(-9px);
+    background-color: #2A6582 !important;
+    border: 1px solid #4BD1FF !important;
+    color: #f4f5f5 !important;
+    transition: transform 0.3s ease-in-out, background-color 1s ease-in-out, color 1s ease-in-out;
+  }
 .hh
 {
     letter-spacing: 1px;
@@ -62,5 +64,6 @@ header
     padding: 10px 30px !important;
     text-align: center !important;
     text-decoration: none !important;
-   margin-left: auto !important;
+    margin-left: auto !important;
 }
+

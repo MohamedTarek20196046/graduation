@@ -7,10 +7,13 @@ import sign from '../images/profile_hud79532efb6eb74901e92fd381f814933_919458_30
 import traffic from '../images/traffic-light-detection-using-tensorflow-object-detection-api-fig7-755150.jpg'
 import Footer from '../Footer/Footer'
 import TrackNav from '../TrackNav/TrackNav'
+import AnimatedPage from '../AnimatedPage'
 export default function StaticTracking() {
   return (
     <>
+   
      <TrackNav/>
+     <AnimatedPage>
    <div className={`${styles.tracking} ${styles.display1} container`}>
         <div className="text-center w-75 m-auto">
             <p className="text-white fs-3 text-center">static tracking is a  service where the user will be able to upload a picture or a video  to detect lane, Sign, traffic lights, crosswalks and pedestrians.</p>
@@ -178,6 +181,7 @@ export default function StaticTracking() {
 
 
     <Footer/>
+    </AnimatedPage>
     </>
   )
 }
