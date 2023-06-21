@@ -248,7 +248,7 @@ export default function Home({ saveUserData }) {
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
-        <h2 className="my-3">I am your Smart recognition system</h2>
+        <h2 className="my-3">IIIIII am your Smart recognition system</h2>
         <div className="d-flex justify-content-center align-items-center">
           <p className="fs-4">I am ready to help</p>
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
