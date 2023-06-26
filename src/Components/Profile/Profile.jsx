@@ -8,9 +8,75 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import AnimatedPage from '../AnimatedPage'
+import { FloatButton } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate  } from 'react-router-dom';
 export default function Profile() {
+
+    const [isRecording, setIsRecording] = useState(false);
+  
+    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const navigate = useNavigate ();
+    const toggleListen = () => {
+      if(!browserSupportsSpeechRecognition){
+        alert("your browser doesn't support mic ")
+      }
+      if (!isRecording) {
+        toast.info("mic on", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        SpeechRecognition.startListening();
+        setIsRecording(true)
+      } else {
+        SpeechRecognition.stopListening()
+        setIsRecording(false)
+        console.log(transcript)
+        toast.info("mic off", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        if(transcript.includes("live"))
+        {
+          navigate("/livetrack")
+        }else if(transcript.includes("static"))
+        {
+          navigate("/statictrack")
+        }else if(transcript.includes("profile"))
+        {
+          navigate("/profile")
+        }else if(transcript.includes("logout") || transcript.includes("log out") )
+        {
+          localStorage.clear();
+          navigate("/")
+        }else if(transcript.includes("home"))
+        {
+            navigate("/")
+        }
+        resetTranscript()
+      }
+
+     
+    }
+
+
+
+
     localStorage.setItem('actions', 'd-none')
     const click = () => {
         localStorage.clear();
@@ -95,6 +161,7 @@ export default function Profile() {
             pauseOnHover
             theme="dark"
             />
+            <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
             <Navbar />
             <AnimatedPage>
             <section className={`container p-5   ${styles.profile} ${styles.display1}`}>

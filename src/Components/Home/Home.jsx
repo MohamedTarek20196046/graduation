@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useNavigate  } from 'react-router-dom';
 import axios, { Axios } from 'axios'
 import styles from './Home.module.css'
 import About from '../About/About'
@@ -12,6 +13,9 @@ import { Link } from 'react-router-dom';
 import AnimatedPage from '../AnimatedPage'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FloatButton } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
 export default function Home({ saveUserData }) {
   const [model, setModel] = useState(false)
   let [logincolor, setLoginColor] = useState(`${styles.loginBtn}`)
@@ -256,9 +260,65 @@ export default function Home({ saveUserData }) {
     }
 
   }
+    const [isRecording, setIsRecording] = useState(false);
+  
+    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const navigate = useNavigate ();
+    const toggleListen = () => {
+      if(!browserSupportsSpeechRecognition){
+        alert("your browser doesn't support mic ")
+      }
+      if (!isRecording) {
+        toast.info("mic on", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        SpeechRecognition.startListening();
+        setIsRecording(true)
+      } else {
+        SpeechRecognition.stopListening()
+        setIsRecording(false)
+        console.log(transcript)
+        toast.info("mic off", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        if(transcript.includes("live"))
+        {
+          navigate("/livetrack")
+        }else if(transcript.includes("static"))
+        {
+          navigate("/statictrack")
+        }else if(transcript.includes("profile"))
+        {
+          navigate("/profile")
+        }else if(transcript.includes("logout") || transcript.includes("log out") )
+        {
+          localStorage.clear();
+          navigate("/")
+        }
+        else if(transcript.includes("home"))
+        {
+            navigate("/")
+        }
+        resetTranscript()
+      }
 
-
-
+     
+    }
+    
 
   function validateRegisterForm() {
     let scheme = Joi.object({
@@ -295,12 +355,13 @@ export default function Home({ saveUserData }) {
     pauseOnHover
     theme="dark"
     />
+    <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
     <AnimatedPage>
     <Navbar />
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
       <div className="header-content text-center text-white p-3">
         <h4>Welcome !</h4>
-        <h2 className="my-3">I am your Smart recognition system</h2>
+        <h2 className="my-3">I am your Smart recognition system </h2>
         <div className="d-flex justify-content-center align-items-center">
           <p className="fs-4">I am ready to help</p>
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
@@ -430,6 +491,7 @@ export default function Home({ saveUserData }) {
     <Service />
     <Contacts />
     <Footer/>
+    
     </AnimatedPage>    
     
   </>

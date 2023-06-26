@@ -1,12 +1,94 @@
-import React from 'react'
+import React , {useState} from 'react'
 import styles from './LiveTracking.module.css'
 import TrackNav from '../TrackNav/TrackNav'
 import Footer from '../Footer/Footer'
 import AnimatedPage from '../AnimatedPage'
+import { FloatButton } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate  } from 'react-router-dom';
+const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function LiveTracking() {
+    const [isRecording, setIsRecording] = useState(false);
+  
+    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const navigate = useNavigate ();
+    const toggleListen = () => {
+      if(!browserSupportsSpeechRecognition){
+        alert("your browser doesn't support mic ")
+      }
+      if (!isRecording) {
+        toast.info("mic on", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        SpeechRecognition.startListening();
+        setIsRecording(true)
+      } else {
+        SpeechRecognition.stopListening()
+        setIsRecording(false)
+        console.log(transcript)
+        toast.info("mic off", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        if(transcript.includes("live"))
+        {
+          navigate("/livetrack")
+        }else if(transcript.includes("static"))
+        {
+          navigate("/statictrack")
+        }else if(transcript.includes("profile"))
+        {
+          navigate("/profile")
+        }else if(transcript.includes("logout") || transcript.includes("log out") )
+        {
+          localStorage.clear();
+          navigate("/")
+        }else if(transcript.includes("home"))
+        {
+            navigate("/")
+        }
+        resetTranscript()
+      }
+
+     
+    }
+
+
+    function sound(){
+        const utterance = new SpeechSynthesisUtterance("Live tracking");
+        speechSynthesis.speak(utterance);
+    }
   return (
    <>
-  
+    <ToastContainer
+    position="top-center"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
+    <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
    <TrackNav/>
    <AnimatedPage>
    <div className={`${styles.tracking} container ${styles.display1}`}>
@@ -49,7 +131,7 @@ export default function LiveTracking() {
         </div>
 
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
-            <button className={`btn p-2  ${styles.trackBtn} me-3`}>Start Tracking</button>
+            <button onClick={sound} className={`btn p-2  ${styles.trackBtn} me-3`}>Start Tracking</button>
             <button className={`btn p-2  ${styles.trackBtn} me-3`}>Stop Tracking</button>
         </div>
     </div>
