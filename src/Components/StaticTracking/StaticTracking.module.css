@@ -59,6 +59,14 @@ body
     border-radius: 20px !important;
     box-shadow: none ;
 }
+.processedImage {
+    max-width: 100%;
+    max-height: 400px; 
+  }
+
+  .container {
+    padding: 20px;
+  }
 .serviceCard img
 {
     border-radius: 20px !important;
