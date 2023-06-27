@@ -94,7 +94,7 @@ export default function StaticTracking() {
       const formData = new FormData();
       formData.append('image', file);
     
-      fetch('http://16.171.39.16/detect_image', {
+      fetch('https://16.171.39.16/detect_image', {
         method: 'POST',
         body: formData,
       })
