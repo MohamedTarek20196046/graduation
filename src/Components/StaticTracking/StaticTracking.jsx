@@ -79,7 +79,7 @@ export default function StaticTracking() {
   
     function test()
     {
-      axios.get('http://16.171.39.16/test')
+      axios.get('https://16.171.39.16/test')
       .then(response => {
         console.log(response.data);
       })
