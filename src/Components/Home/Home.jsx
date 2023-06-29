@@ -376,7 +376,7 @@ export default function Home({ saveUserData }) {
       </div>
 
       {model && (
-        <div id="formPopUp" className="container position-fixed " ref={modelRef}>
+        <div id="formPopUp" className={`container position-fixed ${styles.pulse}`} ref={modelRef}>
           <div className={`d-flex flex-wrap ${styles.popUp} rounded justify-content-center`}>
             <button className={`btn w-50 ${logincolor} text-white`} onClick={login}>login</button>
             <button className={`btn w-50 ${registercolor} text-white`} onClick={Register}>register</button>
