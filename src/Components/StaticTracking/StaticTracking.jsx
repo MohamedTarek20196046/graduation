@@ -79,7 +79,7 @@ export default function StaticTracking() {
   
     function test()
     {
-      axios.get('https://16.171.39.16/test')
+      axios.get('https://terfci.msp-asu.tech/test')
       .then(response => {
         console.log(response.data);
       })
@@ -94,7 +94,7 @@ export default function StaticTracking() {
       const formData = new FormData();
       formData.append('image', file);
     
-      fetch('https://16.171.39.16/detect_image', {
+      fetch('https://terfci.msp-asu.tech/detect_image', {
         method: 'POST',
         body: formData,
       })
