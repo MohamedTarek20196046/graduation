@@ -111,6 +111,53 @@ export default function LiveTracking() {
     }
   };
 
+  const startStream1 = async () => {
+    try {
+        const video = videoRef.current;
+        const constraints = {
+          video: true
+        };
+        
+        if (navigator.mediaDevices.getSupportedConstraints().facingMode) {
+          constraints.video = {
+            facingMode: { exact: "environment" }
+          };
+        }
+        
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        video.play();
+        setStreaming(true);
+
+      const id = setInterval(async () => {
+        try {
+          const imageBlob = await getImageFromStream(stream);
+          const formData = new FormData();
+          formData.append('image', imageBlob);
+          const response = await axios.post(
+            'https://terfci.msp-asu.tech/detect_image',
+            formData,
+            {
+              headers: { 'Content-Type': 'multipart/form-data' },
+              responseType: 'json',
+            }
+          );
+          setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
+          setLatestJson(response.data);
+        } catch (error) {
+          setError(error);
+        }
+      }, 200);
+
+      setIntervalId(id);
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+
+
+
   const stopStream = () => {
     clearInterval(intervalId);
     const stream = videoRef.current?.srcObject;
@@ -128,6 +175,7 @@ export default function LiveTracking() {
 
     const start = async () => {
       id = await startStream();
+      
     };
 
     const stop = () => {
@@ -166,6 +214,12 @@ export default function LiveTracking() {
     }
   };
 
+  const handleStartStream1 = () => {
+    if (!streaming) {
+      startStream1();
+    }
+  };
+
   const handleStopStream = () => {
     if (streaming) {
       stopStream();
@@ -192,7 +246,7 @@ export default function LiveTracking() {
     <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
    <TrackNav/>
    <AnimatedPage>
-      <div className={`${styles.tracking} container`}>
+      <div className={`${styles.tracking} ${styles.display1} container`}>
         <div className="text-center w-75 m-auto">
           <p className="text-white fs-3 text-center">
             Live tracking is a dynamic service where the user will be able to
@@ -200,7 +254,7 @@ export default function LiveTracking() {
             rolling. </p>
         </div>
 
-        <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
+        <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
           
           {/* {error && <div>{error.message}</div>} */}
           <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
@@ -214,8 +268,28 @@ export default function LiveTracking() {
         </div>
 
         {/* {latestJson && <pre>{JSON.stringify(latestJson, null, 2)}</pre>} */}
-      
+
       </div>
+         {/* mobile view*/}
+      <div className={`${styles.tracking}  ${styles.display2}`}>
+        <div className="text-center w-75 pt-3 pb-1 m-auto">
+            <p className={`text-white ${styles.font} text-center`}>Live tracking is a dynamic service where the user will be able to
+                open the camera and detect lane, Sign, traffic lights, crosswalks and pedestrians while your camera is
+                rolling. </p>
+        </div>
+
+        <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
+            <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>
+            
+        </div>
+
+        <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
+            <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
+            <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming} >Stop Tracking</button>
+        </div>
+    </div>
+
+
       <Footer />
     </AnimatedPage>
    </>
