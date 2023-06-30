@@ -279,7 +279,8 @@ export default function LiveTracking() {
         </div>
 
         <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
-            <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>
+            <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
+            {latestFrame && <img src={latestFrame} />}
             
         </div>
 
