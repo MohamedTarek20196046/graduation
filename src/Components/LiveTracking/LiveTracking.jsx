@@ -91,7 +91,7 @@ export default function LiveTracking() {
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'https://terfci.msp-asu.tech/detect_image',
+            'https://terfci.msp-asu.tech/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
