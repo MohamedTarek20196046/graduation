@@ -1,11 +1,8 @@
 import React from 'react'
 import styles from './Profile.module.css'
-import cross from '../images/cross2.jpg'
-import hasbik from '../images/CM229-2.jpg'
-import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AnimatedPage from '../AnimatedPage'
 import { FloatButton } from 'antd';
@@ -14,10 +11,11 @@ import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recogniti
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate  } from 'react-router-dom';
+import TrackNav from '../TrackNav/TrackNav'
 export default function Profile() {
 
     const [isRecording, setIsRecording] = useState(false);
-  
+    const [Uploads, setUploads] = useState([]);
     const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
     const navigate = useNavigate ();
     const toggleListen = () => {
@@ -85,6 +83,14 @@ export default function Profile() {
     const [profilePictureUrl, setProfilePictureUrl] = useState(null);
    
     useEffect(() => {
+        axios.get(`https://backend-ab6i.onrender.com/profile_uploaded_pictures/${localStorage.getItem('idusers')}`)
+        .then(response => {
+          
+          setUploads(response.data)
+        })
+        .catch(error => {
+          console.error(error);
+        });
         async function fetchProfilePicture() {
             const response = await axios.get(`https://backend-ab6i.onrender.com/profile_picture/${localStorage.getItem('idusers')}`, {
                 responseType: 'text'
@@ -101,19 +107,19 @@ export default function Profile() {
     const [phonenumber, setPhonenumber] = useState(localStorage.getItem('phonenumber'));
     const [profilePicture, setProfilePicture] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-
+    
 
     async function handleSaveChanges() {
-        toast.info('your data is updating', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            });
+      toast.info('Your profile is updating',{
+        position: "top-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
         const formData = new FormData();
         if (profilePicture) {
         const formData1 = new FormData()
@@ -141,58 +147,82 @@ export default function Profile() {
           localStorage.setItem('password', password);
           localStorage.setItem('email', email);
           localStorage.setItem('phonenumber', phonenumber);
+          toast.dismiss()
           setIsEditMode(false);
           window.location.reload(false);
         } catch (error) {
           console.log(error);
         }
       }
+
+      function view(event){
+        const src = event.target.src;
+        localStorage.setItem("viewmode","true")
+        localStorage.setItem("view",src)
+        navigate("/statictrack")
+      }
+
+      function togglefunction(){
+        setIsEditMode(!isEditMode)
+        setUsername(localStorage.getItem('username'))
+        setPassword(localStorage.getItem('password'))
+        setEmail(localStorage.getItem('email'))
+        setPhonenumber(localStorage.getItem('phonenumber'))
+      }
     return (
         <>
-            <ToastContainer
-            position="top-center"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            />
+            <ToastContainer/>
             <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
-            <Navbar />
+            <TrackNav />
             <AnimatedPage>
             <section className={`container p-5   ${styles.profile} ${styles.display1}`}>
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row p-4 ${styles.userProf}`}>
                     <div className="col-md-2">
-                        {profilePictureUrl&&<img src={profilePictureUrl} alt="profile picture" className="w-75 rounded-circle" />}
-                        {isEditMode && <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />}
+                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className="w-75 rounded-circle" />}
+                        {isEditMode && (
+                            <>
+                                <label htmlFor="profilePictureInput" className={`btn mt-3 ${styles.editbtn} rounded-pill`}>
+                                    Choose a new pic
+                                </label>
+                                <input
+                                    id="profilePictureInput"
+                                    type="file"
+                                    onChange={(e) => setProfilePicture(e.target.files[0])}
+                                    style={{ display: "none" }}
+                                />
+                            </>
+                        )}
                     </div>
                     <div className="col-md-10">
                         <form>
-                            <input className={`form-control ${styles.formControl} w-50  my-4 text-white`} type="text" value={username} disabled={!isEditMode} onChange={(e) => setUsername(e.target.value)} />
-                            <input className={`form-control w-50  ${styles.formControl} mb-4 text-white`} type="text" value={password} disabled={!isEditMode} onChange={(e) => setPassword(e.target.value)} />
+                        <label htmlFor="username">Username:</label>
+                            <input id='username' className={`form-control ${styles.formControl} w-50  my-4 text-white`} type="text" value={username} disabled={!isEditMode} onChange={(e) => setUsername(e.target.value)} />
+                            <input className={`form-control ${styles.formControl} w-50 mb-4 text-white`} type={isEditMode ? "text" : "password"}  value={password}  disabled={!isEditMode} onChange={(e) => setPassword(e.target.value)} />
                             <input className={`form-control w-50  ${styles.formControl} mb-4 text-white`} type="email" value={email} disabled={!isEditMode} onChange={(e) => setEmail(e.target.value)} />
                             <input className={`form-control w-50  ${styles.formControl} mb-4 text-white`} type="number" value={phonenumber} disabled={!isEditMode} onChange={(e) => setPhonenumber(e.target.value)} />
-                            {isEditMode && <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save Changes</button>}
+                            {isEditMode && <button type="button" className={`btn mt-3 ${styles.editbtn} rounded-pill w-25 p-3`} onClick={handleSaveChanges}>Save Changes</button>}
                         </form>
-                        <button type="button" className={`btn mt-3 ${styles.editbtn} rounded-pill w-25 p-3`} onClick={() => setIsEditMode(!isEditMode)}>{isEditMode ? 'Cancel' : 'Edit Profile'}</button>
+                        {!isEditMode && <button type="button" className={`btn mt-3 ${styles.editbtn} rounded-pill w-25 p-3`} onClick={() => setIsEditMode(!isEditMode)}>Edit Profile</button>}
+                        {isEditMode && <button type="button" className={`btn mt-3 ${styles.editbtn} rounded-pill w-25 p-3`} onClick={togglefunction}>Cancel</button>}
                     </div>
                 </div>
 
                 <div className={`row ${styles.userProf} mt-5 gy-3 text-center text-white py-5`}>
                     <h3>History of uploaded images</h3>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    {Uploads.length === 0 ? (
+                    <p className={`${styles.notice}`}>you haven't uploaded any images yet in the static tracking</p>
+                      ) : (
+                        Uploads.map(upload => (
+                          <div className="col-md-4"><img src={upload} onClick={view} className={`w-100 ${styles.images}`} alt="" /></div>
+                        ))
+                      )}
                 </div>
-                <button onClick={click}><Link to="/Home">delete</Link></button>
+                <div className={`${styles.logout} text-center`}>
+                    <Link to="/Home">
+                    <button className={`${styles.text}`} onClick={click} href=''> Logout </button>
+                    </Link>
+                </div>
             </section>
 
 
@@ -201,30 +231,44 @@ export default function Profile() {
             <section className={` p-5  ${styles.profile}  ${styles.display2}`}>
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row  ${styles.userProf}`}>
-                    <div className={`col-md-2 `}>
-                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className={`w-75 rounded-circle $ ${styles.margin}`} />}
-                        {isEditMode && <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />}
+                <div className="col-md-2">
+                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className={`w-75 rounded-circle ${styles.profileimg}`} />}
+                        {isEditMode && (
+                            <>
+                                <label htmlFor="profilePictureInput" className={`btn mt-3 ${styles.choose} rounded-pill`}>
+                                    Choose a new pic
+                                </label>
+                                <input
+                                    id="profilePictureInput"
+                                    type="file"
+                                    onChange={(e) => setProfilePicture(e.target.files[0])}
+                                    style={{ display: "none" }}
+                                />
+                            </>
+                        )}
                     </div>
                     <div className="col-md-10">
                         <form>
-                            <input className={`form-control ${styles.formControl} w-100  my-4 text-white`} type="text" value={username} disabled={!isEditMode} onChange={(e) => setUsername(e.target.value)} />
+                            <label htmlFor="username">Username:</label>
+                            <input id='username' className={`form-control ${styles.formControl} w-100  my-4 text-white`} type="text" value={username} disabled={!isEditMode} onChange={(e) => setUsername(e.target.value)} />
                             <input className={`form-control   ${styles.formControl} w-100 mb-4 text-white`} type="text" value={password} disabled={!isEditMode} onChange={(e) => setPassword(e.target.value)} />
                             <input className={`form-control  ${styles.formControl} w-100 mb-4 text-white`} type="email" value={email} disabled={!isEditMode} onChange={(e) => setEmail(e.target.value)} />
                             <input className={`form-control   ${styles.formControl} w-100 mb-4 text-white`} type="number" value={phonenumber} disabled={!isEditMode} onChange={(e) => setPhonenumber(e.target.value)} />
-                            {isEditMode && <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save Changes</button>}
+                            {isEditMode && <button type="button" className={`btn mt-3 ${styles.save} rounded-pill w-75 p-3`} onClick={handleSaveChanges}>Save Changes</button>}
                         </form>
                         <button type="button" className={`btn mt-3 mb-3 ${styles.editbtn} rounded-pill w-50 p-3`} onClick={() => setIsEditMode(!isEditMode)}>{isEditMode ? 'Cancel' : 'Edit Profile'}</button>
                     </div>
                 </div>
 
-                <div className={`row ${styles.userProf} mt-4 gy-3 text-center text-white py-5`}>
+                <div className={`row ${styles.userProf} mt-5 gy-3 text-center text-white py-5`}>
                     <h3>History of uploaded images</h3>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
-                    <div className="col-md-4"><img src={cross} className="w-100" alt="" /></div>
+                    {Uploads.length === 0 ? (
+                    <p className={`${styles.notice}`}>you haven't uploaded any images yet in the static tracking</p>
+                      ) : (
+                        Uploads.map(upload => (
+                          <div className="col-md-4"><img src={upload} onClick={view} className={`w-100 ${styles.images}`} alt="" /></div>
+                        ))
+                      )}
                 </div>
                 <br></br>
                 <div className={`${styles.logout} text-center`}>
