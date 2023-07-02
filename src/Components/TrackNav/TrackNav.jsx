@@ -11,10 +11,14 @@ export default function TrackNav() {
     if(localStorage.getItem('static')===null){
         localStorage.setItem('static','text-white')
     }
+    if(localStorage.getItem('profilecolor')===null){
+        localStorage.setItem('profilecolor','text-white')
+    }
     function live(event){
         event.preventDefault();
         localStorage.setItem('live','text-info')
         localStorage.setItem('static','text-white')
+        localStorage.setItem('profilecolor','text-white')
         navigate('/livetrack');
     }
 
@@ -22,13 +26,22 @@ export default function TrackNav() {
         event.preventDefault();
         localStorage.setItem('static','text-info')
         localStorage.setItem('live','text-white')
+        localStorage.setItem('profilecolor','text-white')
         navigate('/statictrack');
     }
     function test1(event){
         event.preventDefault();
         localStorage.setItem('live','text-info')
         localStorage.setItem('static','text-white')
+        localStorage.setItem('profilecolor','text-white')
         navigate('/');
+    }
+    function test3(event){
+        event.preventDefault();
+        localStorage.setItem('live','text-white')
+        localStorage.setItem('static','text-white')
+        localStorage.setItem('profilecolor','text-info')
+        navigate('/profile');
     }
 
     return (
@@ -60,10 +73,10 @@ export default function TrackNav() {
                             </li>
 
                             <li className="nav-item">
-                                <Link className={`nav-link text-white ${localStorage.getItem('viewProfile')}`} aria-current="page" to="/profile" >
-                                    <i className="fa-solid fa-user-large"></i>
+                                <a className={`nav-link  ${localStorage.getItem('profilecolor')} ${style.profile}`} aria-current="page" onClick={test3} href='' >
+                                <i className="fa-solid fa-user-large"></i>
                                     {localStorage.getItem('username')}
-                                </Link>
+                                </a>
                             </li>
 
                         </ul>
