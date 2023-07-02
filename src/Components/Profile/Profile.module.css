@@ -19,6 +19,7 @@ body
 .userProf .formControl
 {
     background-color: #1E2846 !important;
+    border: #1E2846 ;
 
 }
 
@@ -47,6 +48,33 @@ body
     margin-left: 14%;
     height: 200px;
 }
+.text{
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    margin: 0;
+    background-color: #1E2846 !important;
+    color: #FF3131;
+    font-size: 20px;
+}
+.logout{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 6px;
+    width: 25%;
+    margin-left: 37%;
+    background-color: #1E2846 !important;
+    margin-top: 30px;
+}
+.images{
+    height: 100%;
+    cursor: pointer;
+}
+.notice
+{
+    color: #f76666;
+    font-size: 20px;
+}
 @media (max-width: 480px) {
     .display1{
         display: none;
@@ -74,6 +102,17 @@ body
         color: white !important;
         margin-left: 25%;
     }
+    .choose
+    { 
+        background-color: #1E2846 !important;
+        color: white !important;
+        margin-left: 18%;
+    }
+    .save{
+        background-color: #1E2846 !important;
+        color: white !important;
+        margin-left: 14%;
+    }
     .logout{
         border: 1px solid black;
         border-radius: 10px;
@@ -88,6 +127,17 @@ body
         padding: 0;
         margin: 0;
         background-color: #1E2846 !important;
-        color: rgb(185, 4, 4);
+        color: #FF3131;
+    }
+    .profileimg{
+        padding-top: 15px;
+        margin-left: 13%;
+       
+    }
+    .notice
+    {
+        color: #f76666;
+        font-size: 15px;
+        
     }
   }
