@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect , useRef } from 'react';
 import styles from './StaticTracking.module.css';
 import Footer from '../Footer/Footer';
 import TrackNav from '../TrackNav/TrackNav';
@@ -10,10 +10,12 @@ import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recogniti
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate  } from 'react-router-dom';
+const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function StaticTracking() {
 
     localStorage.setItem('static','text-info')
     localStorage.setItem('live','text-white')
+    localStorage.setItem('profilecolor','text-white')
 
     const [isRecording, setIsRecording] = useState(false);
   
@@ -76,24 +78,90 @@ export default function StaticTracking() {
     const [imageFile, setImageFile] = useState(null);
     const [processedImageURL, setProcessedImageURL] = useState(null);
     const [detections, setDetections] = useState([]);
-  
-    function test()
-    {
-      axios.get('https://terfci.msp-asu.tech/test')
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    }
-    function handleImageUpload(event) {
+    const hasMountedRef = useRef(false);
+    useEffect(() => {
+      // This code will run only once, when the component mounts
+    if(!hasMountedRef.current && localStorage.getItem("viewmode")==="true") 
+    {    
+      fetch(localStorage.getItem("view")).then(response => response.blob()).then(blob => {
+        toast.info('Your image is being processed ',{
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        const file = new File([blob], 'image.jpg', { type: blob.type });
+        const formData = new FormData();
+        formData.append('image', file);
+        fetch('https://terfci.msp-asu.tech/detect_image', {
+          method: 'POST',
+          body: formData,
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            else{
+              return response
+            }
+          })
+          .then(data => {
+            if (data && data.image && data.detections) {
+              const imageURL = `data:image/jpeg;base64,${data.image}`;
+              setProcessedImageURL(imageURL);
+              setDetections(data.detections);
+              localStorage.setItem("viewmode","false")
+              toast.dismiss()
+              data.detections.forEach((detection) => {
+                console.log(`Class: ${detection.class}, Confidence: ${detection.confidence}`);
+                if(detection.class.includes("stop"))
+                {
+                  const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
+                  speechSynthesis.speak(utterance);
+                }else if(detection.class.includes("red")){
+                  const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
+                  speechSynthesis.speak(utterance);
+                }
+              });
+            } else {
+              console.error('Response is not valid:', data);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        }); 
+        
+        hasMountedRef.current = true;
+        
+        
+
+       }
+    }, [localStorage.getItem("viewmode"), localStorage.getItem("view")]);
+    
+      
+    async function handleImageUpload(event) {
       const file = event.target.files[0];
       setImageFile(file);
-    
       const formData = new FormData();
       formData.append('image', file);
-    
+      toast.info('Your image is being processed ',{
+        position: "top-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
       fetch('https://terfci.msp-asu.tech/detect_image', {
         method: 'POST',
         body: formData,
@@ -107,11 +175,22 @@ export default function StaticTracking() {
           }
         })
         .then(data => {
-          console.log(data);
           if (data && data.image && data.detections) {
             const imageURL = `data:image/jpeg;base64,${data.image}`;
             setProcessedImageURL(imageURL);
             setDetections(data.detections);
+            toast.dismiss()
+            data.detections.forEach((detection) => {
+              console.log(`Class: ${detection.class}, Confidence: ${detection.confidence}`);
+              if(detection.class.includes("stop"))
+              {
+                const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
+                speechSynthesis.speak(utterance);
+              }else if(detection.class.includes("light")){
+                const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
+                speechSynthesis.speak(utterance);
+              }
+            });
           } else {
             console.error('Response is not valid:', data);
           }
@@ -119,26 +198,34 @@ export default function StaticTracking() {
         .catch(error => {
           console.error(error);
         });
+        const formData1 = new FormData();
+        formData1.append("file", file)
+        formData1.append("upload_preset", "qmyra1zh")
+        let response1  = await axios.post("https://api.cloudinary.com/v1_1/djsf0enir/image/upload",formData1)
+        const urla = await response1.data.url
+        console.log("1111 : " +urla)
+
+        const formData2 = new FormData();
+        console.log(urla);
+        console.log(localStorage.getItem('idusers'));
+        formData2.append('picture', urla);
+        formData2.append('user_id',localStorage.getItem('idusers'));
+        axios.post('https://backend-ab6i.onrender.com//upload', formData2)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.error(error);
+      });
     }
   
     return (
       <>
-         <ToastContainer
-            position="top-center"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            />
+         <ToastContainer/>
           <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
         <TrackNav />
         <AnimatedPage>
-        <div className={`${styles.tracking} container`}>
+        <div className={`${styles.tracking} ${styles.display1} container`}>
           <div className="text-center w-75 m-auto">
             <p className="text-white fs-3 text-center">
               static tracking is a service where the user will be able to upload a picture or a video to detect lane, Sign, traffic lights, crosswalks and pedestrians.
@@ -158,19 +245,79 @@ export default function StaticTracking() {
               Upload
             </label>
             <input type="file" id="image-input" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
-            <button className={`btn p-2 ${styles.trackBtn} me-3`}>Stop Tracking</button>
+            <button className={`btn p-2 ${styles.trackBtn} me-3`} onClick={()=>{setProcessedImageURL(""); setDetections("");document.getElementById("image-input").value = "";}}>Remove</button>
           </div>
   
           {detections.length > 0 && (
-            <div className="text-white fs-3 text-center">
-              <ul>
-                {detections.map((detection, index) => (
-                  <li key={index}>{`${detection.class} (${detection.confidence.toFixed(2)})`}</li>
+            <div className="text-white  text-center">
+              <h3 className={`${styles.mobfont}`}>These are the objects detected by our model</h3>
+              <table >
+              <tbody>
+                <tr>
+                  <th>Class</th>
+                  <th>Confidence</th>
+                </tr>
+                {detections.map((detection) => (
+                  <tr >
+                    <td>{detection.class}</td>
+                    <td>{detection.confidence.toFixed(2)}</td>
+                  </tr>
                 ))}
-              </ul>
+              </tbody>
+            </table>
             </div>
           )}
+          <br></br>
+          
         </div>
+
+        {/* Mobile view */}
+
+        <div className={`${styles.tracking} ${styles.display2} `}>
+          <div className={`text-center ${styles.paragraph} m-auto`}>
+            <p className="text-white fs-5 text-center">
+              upload your image to start detecting your environment
+            </p>
+          </div>
+  
+          <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
+            {processedImageURL ? (
+              <img src={processedImageURL} alt="Processed image" className={styles.processedImage} />
+            ) : (
+              <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>
+            )}
+          </div>
+  
+          <div className="m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
+            <label htmlFor="image-input" className={`btn p-2 ${styles.trackBtn} me-3`}>
+              Upload
+            </label>
+            <input type="file" id="image-input" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+            <button className={`btn p-2 ${styles.trackBtn} me-3`} onClick={()=>{setProcessedImageURL(""); setDetections("");document.getElementById("image-input").value = "";}}>Remove</button>
+          </div>
+  
+          {detections.length > 0 && (
+            <div className="text-white  text-center">
+              <h3 className={`${styles.mobfont1}`}>These are the objects detected by our model</h3>
+              <table >
+              <tbody>
+                <tr>
+                  <th>Class</th>
+                  <th>Confidence</th>
+                </tr>
+                {detections.map((detection) => (
+                  <tr >
+                    <td>{detection.class}</td>
+                    <td>{detection.confidence.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </div>
+          )}
+          <br></br>
+        </div>
+
         <Footer />
         </AnimatedPage>
       </>
