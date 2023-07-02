@@ -63,6 +63,13 @@ body
 .font{
     font-size: medium;
 }
+.cameraOpen{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    margin: 0;
+    padding: 0;
+}
 
 @media (max-width: 480px) {
     .display1{
@@ -77,8 +84,8 @@ body
         margin-top: 80px;
     }
     .camera{
-        width: 80%;
-        min-height: 25vh ;
+        width: 90%;
+        height:15vh;
         border: 3px solid #232D4C;
         border-radius: 7px;
     }
@@ -88,4 +95,5 @@ body
         border: 3px solid #232D4C;
         border-radius: 7px;
     }
+    
   }
