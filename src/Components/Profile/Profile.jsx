@@ -157,11 +157,11 @@ export default function Profile() {
 
       function view(event){
         const src = event.target.src;
+        const secureUrl = src.replace('http://', 'https://');
         localStorage.setItem("viewmode","true")
-        localStorage.setItem("view",src)
+        localStorage.setItem("view",secureUrl)
         navigate("/statictrack")
       }
-
       function togglefunction(){
         setIsEditMode(!isEditMode)
         setUsername(localStorage.getItem('username'))
