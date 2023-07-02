@@ -19,3 +19,12 @@
 .color{
     color: #4BD1FF !important;
 }
+.profile{
+    margin-left: 90vh;
+}
+
+@media (max-width: 480px) {
+    .profile{
+        margin-left: 0px;
+    }
+  }
