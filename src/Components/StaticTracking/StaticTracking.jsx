@@ -210,7 +210,7 @@ export default function StaticTracking() {
         console.log(localStorage.getItem('idusers'));
         formData2.append('picture', urla);
         formData2.append('user_id',localStorage.getItem('idusers'));
-        axios.post('https://backend-ab6i.onrender.com//upload', formData2)
+        axios.post('https://backend-ab6i.onrender.com/upload', formData2)
           .then(response => {
             console.log(response);
           })
