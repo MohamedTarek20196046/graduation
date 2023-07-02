@@ -225,10 +225,7 @@ export default function LiveTracking() {
       stopStream();
     }
   };
-    function sound(){
-        const utterance = new SpeechSynthesisUtterance("Live tracking");
-        speechSynthesis.speak(utterance);
-    }
+    
   return (
    <>
     <ToastContainer
@@ -256,9 +253,9 @@ export default function LiveTracking() {
 
         <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
           
-          {/* {error && <div>{error.message}</div>} */}
-          <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
-          {latestFrame && <img src={latestFrame} />}
+           {/* {error && <div>{error.message}</div>} */}
+           <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
+          {latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
           
         </div>
 
@@ -273,14 +270,12 @@ export default function LiveTracking() {
          {/* mobile view*/}
       <div className={`${styles.tracking}  ${styles.display2}`}>
         <div className="text-center w-75 pt-3 pb-1 m-auto">
-            <p className={`text-white ${styles.font} text-center`}>Live tracking is a dynamic service where the user will be able to
-                open the camera and detect lane, Sign, traffic lights, crosswalks and pedestrians while your camera is
-                rolling. </p>
+            <p className={`text-white ${styles.font} text-center`}>open your camera and start detecting </p>
         </div>
 
         <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
             <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
-            {latestFrame && <img src={latestFrame} />}
+            {latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
             
         </div>
 
