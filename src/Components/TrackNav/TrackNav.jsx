@@ -2,7 +2,7 @@ import React from 'react'
 import style from './TrackNav.module.css'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
-
+import image from '../images/image.png'
 export default function TrackNav() {
     const navigate = useNavigate();
     if(localStorage.getItem('live')===null){
@@ -46,11 +46,9 @@ export default function TrackNav() {
 
     return (
         <>
-
-
             <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
                 <div className="container">
-                    <a className={`navbar-brand ${style.logo}`} onClick={test1} href=''>Code Hub</a>
+                <Link className={`navbar-brand ${style.logo}`} to="/Home"><img className={`${style.img1}`} src={image} /><span className={`${style.span1}`}>Code Hub</span></Link>
                     <button className={`navbar-toggler ${style.togglerColor}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -67,13 +65,13 @@ export default function TrackNav() {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className={`nav-link  ${localStorage.getItem('static')}`} aria-current="page" onClick={test} href='' >
+                                <a className={`nav-link  ${localStorage.getItem('static')} ${localStorage.getItem('viewProfile')}`} aria-current="page" onClick={test} href='' >
                                 Static Tracking
                                 </a>
                             </li>
 
                             <li className="nav-item">
-                                <a className={`nav-link  ${localStorage.getItem('profilecolor')} ${style.profile}`} aria-current="page" onClick={test3} href='' >
+                                <a className={`nav-link  ${localStorage.getItem('profilecolor')} ${style.profile} ${localStorage.getItem('viewProfile')}`} aria-current="page" onClick={test3} href='' >
                                 <i className="fa-solid fa-user-large"></i>
                                     {localStorage.getItem('username')}
                                 </a>

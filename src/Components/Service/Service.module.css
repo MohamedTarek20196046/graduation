@@ -1,11 +1,11 @@
 .services
 {
-    background-color: #2F3F62;
+    background-color: #18213b;
     
 }
 .serviceCard
 {
-    background-color: #465578 !important;
+    background-color: #1E2846 !important;
     border-radius: 20px !important;
     box-shadow: none ;
 }
@@ -20,3 +20,102 @@
     color: #4BD1FF;
 
 }
+
+.trybtn
+{   background-color: #2f3f6e !important;
+    color: white !important;
+    transition: transform 0.3s ease-in-out, background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.Carddiv{
+    border: 1px solid #4BD1FF;
+    background-color: #1E2846;
+}
+
+.trybtn:hover
+{
+    transform: translateY(-4px);
+    background-color: #2A6582 !important;
+    color: white !important;
+    transition: transform 0.3s ease-in-out, background-color 1s ease-in-out, color 1s ease-in-out;
+    
+}
+
+.navtest{
+    --bs-nav-tabs-border-color:transparent !important;   
+}
+.navlink
+{
+    color: #4BD1FF !important;
+    cursor: pointer;
+    background-color: #1E2846  !important;
+
+}
+.staticcard{
+    margin-left: 25%  !important;
+    margin-top: 15px;
+}
+
+.textcolor
+{
+    color: #4BD1FF !important;
+}
+
+ .customlink
+{
+    color: white;
+    
+
+} 
+.customlink:hover
+{
+    color: white;
+    
+
+} 
+
+:link
+{   
+    text-decoration: none;
+    color: white;
+}
+
+:link:hover
+{
+    text-decoration: none;
+}
+.edit{
+    width: 75%;
+}
+.edit2{
+    display: flex;
+    justify-self: left;
+    margin-left: 20px;
+}
+
+
+.test{
+    padding: 50px;
+}
+@media (max-width: 480px) {
+    .edit{
+        width: 100%;
+        padding: 15px;
+    }
+    .edit2{
+       display: block;
+       margin-left: 0;
+    }
+    .Carddiv {
+        font-size: 15px;
+    }
+    .font{
+        width: 100%;
+        padding: 0;
+        letter-spacing: 1px;
+        
+    }
+    .test{
+        padding-top:40px ;
+    }
+    }

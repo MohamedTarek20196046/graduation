@@ -5,6 +5,9 @@
 .logo
 {
     color: #4BD1FF !important;
+    display: flex;
+    align-items: center;
+    
 } 
 
 
@@ -12,3 +15,11 @@
 {
     color: #4BD1FF !important;
 }
+.img1{
+    height: 40px;
+    padding-right: 5px;
+}
+.fixedtop {
+    z-index: 999;
+    
+  }

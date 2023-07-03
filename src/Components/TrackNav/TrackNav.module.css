@@ -5,7 +5,15 @@
 .logo
 {
     color: #4BD1FF !important;
+    display: flex;
+    align-items: center;
 } 
+
+.img1{
+    height: 40px;
+    padding-right: 5px;
+}
+
 
 
 .togglerColor
@@ -20,10 +28,10 @@
     color: #4BD1FF !important;
 }
 .profile{
-    margin-left: 90vh;
+    margin-left: 87vh;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 983px) {
     .profile{
         margin-left: 0px;
     }

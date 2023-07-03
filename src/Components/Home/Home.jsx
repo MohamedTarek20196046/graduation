@@ -67,6 +67,7 @@ export default function Home({ saveUserData }) {
   useEffect(() => {
     const event = (e) => {
       if (model && !modelRef.current.contains(e.target)) {
+        seterrorListRegister([])
         setModel(false)
       }
       else if (model && (Popup1Ref.current.contains(e.target))) {
@@ -120,12 +121,22 @@ export default function Home({ saveUserData }) {
 
 
   async function check() {
+    
     let { data } = await axios.post("https://backend-ab6i.onrender.com/check", user);
     if (data.message === 'not found') {
+      toast.info('Your account is being created ',{
+        position: "top-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
       sendRegisterDatatoApi()
     }
     else {
-      console.log("heheeh")
       toast.warn('Sorry this email is already used ', {
         position: "top-center",
         autoClose: 5000,
@@ -140,7 +151,6 @@ export default function Home({ saveUserData }) {
   }
 
   async function sendRegisterDatatoApi() {
-    console.log("kkk : "+image);
     const formData1 = new FormData()
     const formData = new FormData();
     if(bool==="yes"){
@@ -148,7 +158,6 @@ export default function Home({ saveUserData }) {
       formData1.append("upload_preset", "qmyra1zh")
       let response1  = await axios.post("https://api.cloudinary.com/v1_1/djsf0enir/image/upload",formData1)
       const urla = await response1.data.url
-      console.log("1111 : " +urla)
       formData.append('profile_picture', urla);
     }else{
       formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1687301327/default_le6jnb.jpg");
@@ -169,6 +178,7 @@ export default function Home({ saveUserData }) {
       });
 
       if (response.data.message === 'success') {
+        toast.dismiss()
         login();
         toast.success('Please login to start detecting ',{
           position: "top-right",
@@ -295,28 +305,38 @@ export default function Home({ saveUserData }) {
           progress: undefined,
           theme: "dark",
           });
-        if(transcript.includes("live"))
-        {
-          navigate("/livetrack")
-        }else if(transcript.includes("static"))
-        {
-          navigate("/statictrack")
-        }else if(transcript.includes("profile"))
-        {
-          navigate("/profile")
-        }else if(transcript.includes("logout") || transcript.includes("log out") )
-        {
-          localStorage.clear();
-          navigate("/")
-        }
-        else if(transcript.includes("home"))
-        {
+          if(transcript.includes("live"))
+          {
+            navigate("/livetrack")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-info')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("static"))
+          {
+            navigate("/statictrack")
+            localStorage.setItem('static','text-info')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("profile"))
+          {
+            navigate("/profile")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-info')
+            
+          }else if(transcript.includes("logout") || transcript.includes("log out") )
+          {
+            localStorage.clear();
             navigate("/")
-        }
-        resetTranscript()
-      }
-
-     
+          }else if(transcript.includes("home"))
+          {
+              navigate("/")
+              localStorage.setItem('static','text-white')
+              localStorage.setItem('live','text-info')
+              localStorage.setItem('profilecolor','text-white')
+          }
+          resetTranscript()
+      }  
     }
     
 
@@ -324,8 +344,8 @@ export default function Home({ saveUserData }) {
     let scheme = Joi.object({
       Name: Joi.string().min(3).max(30).required(),
       email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-      Phonenumber: Joi.number().required(),
-      Password: Joi.string().pattern(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/),
+      Phonenumber: Joi.string().regex(/^(?!-)\d{11}$/).required(),
+      Password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/),
       profile_picture: Joi.optional()
     })
     return scheme.validate(user, { abortEarly: false });
@@ -333,7 +353,6 @@ export default function Home({ saveUserData }) {
   function validateLoginForm() {
     let scheme2 = Joi.object({
       email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-
       Password: Joi.string().min(3).max(30).required()
     })
     return scheme2.validate(userLogin, { abortEarly: false });
@@ -343,18 +362,7 @@ export default function Home({ saveUserData }) {
   //console.log(errorListLogin.filter((err) => err.context.label === 'Name'));
 
   return <>
-    <ToastContainer
-    position="top-center"
-    autoClose={3000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="dark"
-    />
+    <ToastContainer/>
     <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
     <AnimatedPage>
     <Navbar />
@@ -388,31 +396,31 @@ export default function Home({ saveUserData }) {
 
             <form onSubmit={submitRegister} action="" className={`rounded ${registerForm} pb-2 w-100  text-center`} encType="multipart/form-data">
               {/* {errorList.map((err, index) => <div key={index} className=" alert alert-danger m-auto mt-5">{err.message}</div>)} */}
-              <input name='Name' type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please enter full name" onChange={getUserData} />
+              <input name='Name' type="text" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} required placeholder="Please enter full name" onChange={getUserData} />
 
               {errorListRegister.filter((err) => err.context.label === 'Name')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
                 <p>{errorListRegister.filter((err) => err.context.label === 'Name')[0]?.message}</p>
               </div> : ''}
 
-              <input name='Password' className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} type="password" placeholder="Please enter your Password" onChange={getUserData} />
+              <input name='Password' className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} required type="password" placeholder="Please enter your Password" onChange={getUserData} />
 
               {errorListRegister.filter((err) => err.context.label === 'Password')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
-                <p>{errorListRegister.filter((err) => err.context.label === 'Password')[0]?.message}</p>
+                <p>Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</p>
               </div> : ''}
 
-              <input name='email' className={`form-control w-75 mb-3 m-auto ${styles.formControl} `} type="email" placeholder="Please enter your email" onChange={getUserData} />
+              <input name='email' className={`form-control w-75 mb-3 m-auto ${styles.formControl} `} required type="email" placeholder="Please enter your email" onChange={getUserData} />
 
               {errorListRegister.filter((err) => err.context.label === 'email')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
                 <p>{errorListRegister.filter((err) => err.context.label === 'email')[0]?.message}</p>
               </div> : ''}
 
-              <input name='Phonenumber' className={`form-control w-75 mb-3 m-auto ${styles.formControl}  `} type="number" placeholder="Please enter your Phonenumber" onChange={getUserData} />
+              <input name='Phonenumber' className={`form-control w-75 mb-3 m-auto ${styles.formControl}  `} required type="text" placeholder="Please enter your Phonenumber" onChange={getUserData} />
 
               {errorListRegister.filter((err) => err.context.label === 'Phonenumber')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
-                <p>{errorListRegister.filter((err) => err.context.label === 'Phonenumber')[0]?.message}</p>
+                <p>The Phonenumber must be atLeast 11 characters</p>
               </div> : ''}
-
               <input name='profile_picture' type="file" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please select your ProfilePic" onChange={getUserData} />
+              
 
               {errorListRegister.filter((err) => err.context.label === 'profile_picture')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
                 <p>{errorListRegister.filter((err) => err.context.label === 'profile_picture')[0]?.message}</p>
@@ -420,7 +428,6 @@ export default function Home({ saveUserData }) {
               <div className='w-75 m-auto'>
                 <div>
                   <div >
-
                     <button className={`btn btn-info text-white mt-4 ${styles.submitBtn}  w-75 `} ref={Popup2Ref} >Register</button>
                   </div>
 
@@ -491,7 +498,6 @@ export default function Home({ saveUserData }) {
     <Service />
     <Contacts />
     <Footer/>
-    
     </AnimatedPage>    
     
   </>

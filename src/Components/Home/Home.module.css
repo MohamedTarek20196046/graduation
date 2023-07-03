@@ -70,7 +70,14 @@ body::-webkit-scrollbar {
 .pulse {
     animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) ;
 }
-
+.profilepic{
+    background-color: #465578 !important;
+    border: 1px solid #465578 !important;
+    padding: 15px;
+    color: #4BD1FF !important;
+    opacity: 0.8;
+    cursor: pointer;
+}
 @keyframes pulse {
     0% {
         transform: scale(1);

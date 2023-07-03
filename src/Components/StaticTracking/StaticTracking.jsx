@@ -16,7 +16,8 @@ export default function StaticTracking() {
     localStorage.setItem('static','text-info')
     localStorage.setItem('live','text-white')
     localStorage.setItem('profilecolor','text-white')
-
+    const [stopSign, setstopSign] = useState(false);
+    const [TrafficLight, settrafficLight] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
   
     const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
@@ -55,12 +56,22 @@ export default function StaticTracking() {
         if(transcript.includes("live"))
         {
           navigate("/livetrack")
+          localStorage.setItem('static','text-white')
+          localStorage.setItem('live','text-info')
+          localStorage.setItem('profilecolor','text-white')
         }else if(transcript.includes("static"))
         {
           navigate("/statictrack")
+          localStorage.setItem('static','text-info')
+          localStorage.setItem('live','text-white')
+          localStorage.setItem('profilecolor','text-white')
         }else if(transcript.includes("profile"))
         {
           navigate("/profile")
+          localStorage.setItem('static','text-white')
+          localStorage.setItem('live','text-white')
+          localStorage.setItem('profilecolor','text-info')
+          
         }else if(transcript.includes("logout") || transcript.includes("log out") )
         {
           localStorage.clear();
@@ -68,6 +79,9 @@ export default function StaticTracking() {
         }else if(transcript.includes("home"))
         {
             navigate("/")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-info')
+            localStorage.setItem('profilecolor','text-white')
         }
         resetTranscript()
       }
@@ -114,17 +128,31 @@ export default function StaticTracking() {
               const imageURL = `data:image/jpeg;base64,${data.image}`;
               setProcessedImageURL(imageURL);
               setDetections(data.detections);
+              let count = 0;
+              let spoken = false;
+              let spoken1 = false;
+              let spoken2=false;
               localStorage.setItem("viewmode","false")
               toast.dismiss()
               data.detections.forEach((detection) => {
-                console.log(`Class: ${detection.class}, Confidence: ${detection.confidence}`);
-                if(detection.class.includes("stop"))
+                if(detection.class.includes("stop") && !spoken)
                 {
                   const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
                   speechSynthesis.speak(utterance);
-                }else if(detection.class.includes("red")){
+                  spoken=true;
+                }
+                else if(detection.class.includes("red") && !spoken1){
                   const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
                   speechSynthesis.speak(utterance);
+                  spoken1=true;
+                }else if(detection.class.includes("person") && !spoken2){
+                  count++
+                  if(count>10)
+                  {
+                    const utterance = new SpeechSynthesisUtterance("Be careful you are approaching a crowded area");
+                    speechSynthesis.speak(utterance);
+                    spoken2=true
+                  }
                 }
               });
             } else {
@@ -180,15 +208,28 @@ export default function StaticTracking() {
             setProcessedImageURL(imageURL);
             setDetections(data.detections);
             toast.dismiss()
+            let spoken = false;
+            let spoken1 = false;
+            let spoken2 = false;
+            let count=0
             data.detections.forEach((detection) => {
-              console.log(`Class: ${detection.class}, Confidence: ${detection.confidence}`);
-              if(detection.class.includes("stop"))
+              if(detection.class.includes("stop") && !spoken)
               {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
                 speechSynthesis.speak(utterance);
-              }else if(detection.class.includes("light")){
+                spoken=true;
+              }else if(detection.class.includes("red") && !spoken1){
                 const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
                 speechSynthesis.speak(utterance);
+                spoken1=true;
+              }else if(detection.class.includes("person") && !spoken2){
+                count++
+                if(count>10)
+                {
+                  const utterance = new SpeechSynthesisUtterance("Be careful you are approaching a crowded area");
+                  speechSynthesis.speak(utterance);
+                  spoken2=true
+                }
               }
             });
           } else {
@@ -203,11 +244,9 @@ export default function StaticTracking() {
         formData1.append("upload_preset", "qmyra1zh")
         let response1  = await axios.post("https://api.cloudinary.com/v1_1/djsf0enir/image/upload",formData1)
         const urla = await response1.data.url
-        console.log("1111 : " +urla)
+        
 
         const formData2 = new FormData();
-        console.log(urla);
-        console.log(localStorage.getItem('idusers'));
         formData2.append('picture', urla);
         formData2.append('user_id',localStorage.getItem('idusers'));
         axios.post('https://backend-ab6i.onrender.com/upload', formData2)

@@ -1,18 +1,22 @@
 import React from 'react'
 import style from './Navbar.module.css'
-
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
-
+import image from '../images/image.png'
 export default function Navbar() {
-    
-    
+    const navigate = useNavigate();
+    function test3(event){
+        event.preventDefault();
+        localStorage.setItem('live','text-white')
+        localStorage.setItem('static','text-white')
+        localStorage.setItem('profilecolor','text-info')
+        navigate('/profile');
+    }
     return (
         <>
-          
-           
-            <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
+             <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top ${style.fixedtop}`}>
                 <div className="container">
-                    <Link className={`navbar-brand ${style.logo}`} to="/Home">Code Hub</Link>
+                    <Link className={`navbar-brand ${style.logo}`} to="/Home"><img className={`${style.img1}`} src={image} /><span className={`${style.span1}`}>CodeHub</span></Link>
                     <button className={`navbar-toggler ${style.togglerColor}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -41,10 +45,10 @@ export default function Navbar() {
                                 <a className={`nav-link text-white ${localStorage.getItem('actions')}`} aria-current="page" href="#contact">Contact</a>
                             </li>
                             <li className="nav-item">
-                            <Link className={`nav-link text-white ${localStorage.getItem('viewProfile')}`} aria-current="page"  to="/profile" >
-                                    <i className="fa-solid fa-user-large"></i>
+                                <a className={`nav-link  ${localStorage.getItem('profilecolor')}  ${localStorage.getItem('viewProfile')}`} aria-current="page" onClick={test3} href='' >
+                                <i className="fa-solid fa-user-large"></i>
                                     {localStorage.getItem('username')}
-                                </Link>
+                                </a>
                             </li>
                             
                         </ul>

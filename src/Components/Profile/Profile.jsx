@@ -49,24 +49,37 @@ export default function Profile() {
           progress: undefined,
           theme: "dark",
           });
-        if(transcript.includes("live"))
-        {
-          navigate("/livetrack")
-        }else if(transcript.includes("static"))
-        {
-          navigate("/statictrack")
-        }else if(transcript.includes("profile"))
-        {
-          navigate("/profile")
-        }else if(transcript.includes("logout") || transcript.includes("log out") )
-        {
-          localStorage.clear();
-          navigate("/")
-        }else if(transcript.includes("home"))
-        {
+          if(transcript.includes("live"))
+          {
+            navigate("/livetrack")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-info')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("static"))
+          {
+            navigate("/statictrack")
+            localStorage.setItem('static','text-info')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("profile"))
+          {
+            navigate("/profile")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-info')
+            
+          }else if(transcript.includes("logout") || transcript.includes("log out") )
+          {
+            localStorage.clear();
             navigate("/")
-        }
-        resetTranscript()
+          }else if(transcript.includes("home"))
+          {
+              navigate("/")
+              localStorage.setItem('static','text-white')
+              localStorage.setItem('live','text-info')
+              localStorage.setItem('profilecolor','text-white')
+          }
+          resetTranscript()
       }
 
      

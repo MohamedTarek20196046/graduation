@@ -47,24 +47,37 @@ export default function LiveTracking() {
           progress: undefined,
           theme: "dark",
           });
-        if(transcript.includes("live"))
-        {
-          navigate("/livetrack")
-        }else if(transcript.includes("static"))
-        {
-          navigate("/statictrack")
-        }else if(transcript.includes("profile"))
-        {
-          navigate("/profile")
-        }else if(transcript.includes("logout") || transcript.includes("log out") )
-        {
-          localStorage.clear();
-          navigate("/")
-        }else if(transcript.includes("home"))
-        {
+          if(transcript.includes("live"))
+          {
+            navigate("/livetrack")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-info')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("static"))
+          {
+            navigate("/statictrack")
+            localStorage.setItem('static','text-info')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-white')
+          }else if(transcript.includes("profile"))
+          {
+            navigate("/profile")
+            localStorage.setItem('static','text-white')
+            localStorage.setItem('live','text-white')
+            localStorage.setItem('profilecolor','text-info')
+            
+          }else if(transcript.includes("logout") || transcript.includes("log out") )
+          {
+            localStorage.clear();
             navigate("/")
-        }
-        resetTranscript()
+          }else if(transcript.includes("home"))
+          {
+              navigate("/")
+              localStorage.setItem('static','text-white')
+              localStorage.setItem('live','text-info')
+              localStorage.setItem('profilecolor','text-white')
+          }
+          resetTranscript()
       }
 
      
@@ -84,7 +97,8 @@ export default function LiveTracking() {
       video.srcObject = stream;
       video.play();
       setStreaming(true);
-
+      let count=600;
+      let count1=600;
       const id = setInterval(async () => {
         try {
           const imageBlob = await getImageFromStream(stream);
@@ -100,6 +114,26 @@ export default function LiveTracking() {
           );
           setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
           setLatestJson(response.data);
+          response.data.detections.forEach((detection) => {
+            count++;
+            count1++;
+            if (detection.class.includes("stop")) {
+              if (count > 650 ) {
+                const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
+                speechSynthesis.speak(utterance);
+                count= 0;
+              } 
+            
+            } else if(detection.class.includes("red")) {
+              
+              if (count1 > 650 ) {
+                const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
+                speechSynthesis.speak(utterance);
+                count1= 0;
+              } 
+
+            }
+          });
         } catch (error) {
           setError(error);
         }
@@ -128,7 +162,8 @@ export default function LiveTracking() {
         video.srcObject = stream;
         video.play();
         setStreaming(true);
-
+        let count=600;
+        let count1=600;
       const id = setInterval(async () => {
         try {
           const imageBlob = await getImageFromStream(stream);
@@ -144,11 +179,31 @@ export default function LiveTracking() {
           );
           setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
           setLatestJson(response.data);
+          response.data.detections.forEach((detection) => {
+            count++;
+            count1++;
+            if (detection.class.includes("stop")) {
+              if (count > 650 ) {
+                const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
+                speechSynthesis.speak(utterance);
+                count= 0;
+              } 
+            
+            } else if(detection.class.includes("red")) {
+              
+              if (count1 > 650 ) {
+                const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
+                speechSynthesis.speak(utterance);
+                count1= 0;
+              } 
+
+            }
+          });
+          
         } catch (error) {
           setError(error);
         }
       }, 200);
-
       setIntervalId(id);
     } catch (error) {
       setError(error);
