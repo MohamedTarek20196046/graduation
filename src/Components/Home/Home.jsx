@@ -160,7 +160,7 @@ export default function Home({ saveUserData }) {
       const urla = await response1.data.url
       formData.append('profile_picture', urla);
     }else{
-      formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1687301327/default_le6jnb.jpg");
+      formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1688361175/facebook_huxaw2.jpg");
     }
     
    
