@@ -5,7 +5,6 @@ import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import Layout from './Components/Layout/Layout'
 import jwtDecode from 'jwt-decode'
 import LiveTracking from './Components/LiveTracking/LiveTracking'
-import Tracking from './Components/Tracking/Tracking'
 import StaticTracking from './Components/StaticTracking/StaticTracking'
 
 export default function App () {
@@ -31,7 +30,7 @@ export default function App () {
       {path:'profile',element:<Profile/>},
       {path:'livetrack',element:<LiveTracking/>},
       {path:'statictrack',element:<StaticTracking/>},
-      {path:'tracking',element:<Tracking/>}
+      
     ]}
   ])
  
