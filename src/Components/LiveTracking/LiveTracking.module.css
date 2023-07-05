@@ -81,7 +81,12 @@ body
 }
 .lane1
 {
-    margin-left: 15px;
+    margin-left: 60px;
+    
+}
+.lane2
+{
+    margin-left: 18px;
     
 }
 @media (max-width: 480px) {
@@ -110,17 +115,21 @@ body
     }
     .lane{
         border: #1E2846 2px solid;
-        width: 55%;
+        width: 80%;
         color: white;
         background-color: #232D4C;
         border-radius: 10px;
         margin-bottom:20px ;
-        margin-left: 21%;
+        margin-left: 10%;
     }
     .lane1
     {
-        margin-left: 10px;
+        margin-left: 70px;
         
+    }
+    .lane2
+    {
+        margin-left: 30px;
     }
     
   }

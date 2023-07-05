@@ -91,6 +91,7 @@ export default function LiveTracking() {
   const [streaming, setStreaming] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [detectLane, setDetectLane] = useState(false);
+  const [CrossWalk, setCrossWalk] = useState(false);
   const startStream = async () => {
     try {
       const video = videoRef.current;
@@ -98,7 +99,7 @@ export default function LiveTracking() {
       video.srcObject = stream;
       video.play();
       setStreaming(true);
-      let count=600;
+      let count=102;
       let count1=600;
       const id = setInterval(async () => {
         try {
@@ -106,7 +107,7 @@ export default function LiveTracking() {
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'https://terfci.msp-asu.tech/detect_video',
+            'http://localhost:5000/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
@@ -119,7 +120,7 @@ export default function LiveTracking() {
             count++;
             count1++;
             if (detection.class.includes("stop")) {
-              if (count > 650 ) {
+              if (count > 101 ) {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
                 speechSynthesis.speak(utterance);
                 count= 0;
@@ -163,15 +164,15 @@ export default function LiveTracking() {
         video.srcObject = stream;
         video.play();
         setStreaming(true);
-        let count=600;
-        let count1=600;
+        let count=51;
+        let count1=51;
       const id = setInterval(async () => {
         try {
           const imageBlob = await getImageFromStream(stream);
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'https://terfci.msp-asu.tech/detect_video',
+            'http://localhost:5000/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
@@ -184,7 +185,7 @@ export default function LiveTracking() {
             count++;
             count1++;
             if (detection.class.includes("stop")) {
-              if (count > 650 ) {
+              if (count > 50 ) {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
                 speechSynthesis.speak(utterance);
                 count= 0;
@@ -192,7 +193,7 @@ export default function LiveTracking() {
             
             } else if(detection.class.includes("red")) {
               
-              if (count1 > 650 ) {
+              if (count1 > 50 ) {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
                 speechSynthesis.speak(utterance);
                 count1= 0;
@@ -224,7 +225,6 @@ export default function LiveTracking() {
     setLatestJson(null);
     setStreaming(false);
     setIntervalId(null);
-    window.location.reload(false);
   };
 
   useEffect(() => {
@@ -288,9 +288,22 @@ export default function LiveTracking() {
     sendDetectLaneToServer(newDetectLane);
   };
 
-  const sendDetectLaneToServer = async (detectLaneValue) => {
+  const sendDetectLaneToServer= async (detectLaneValue) => {
     try {
-      await axios.post('https://terfci.msp-asu.tech/update_detect_lane', { detectLane: detectLaneValue });
+      await axios.post('http://localhost:5000/update_detect_lane', { detectLane: detectLaneValue });
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const handleCrossWalkChange = () => {
+    const newCrossWalk = !CrossWalk;
+    setCrossWalk(newCrossWalk);
+    sendCrossWalkToServer(newCrossWalk);
+  };
+
+  const sendCrossWalkToServer  = async (CrossWalkValue) => {
+    try {
+      await axios.post('http://localhost:5000/update_detect_crosswalk', { crossWalk: CrossWalkValue });
     } catch (error) {
       setError(error);
     }
@@ -319,18 +332,19 @@ export default function LiveTracking() {
         </div>
 
         <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
-          
-           {/* {error && <div>{error.message}</div>} */}
-           <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
-          {latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
-          
-        </div>
+            {!streaming && <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>}
+            {/* {error && <div>{error.message}</div>} */}
+            <video ref={videoRef} className={`${styles.cameraIcon} d-none`} />
+            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
+          </div>
+
         
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
           <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream} disabled={streaming}>Start Tracking</button>
           <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming}>Stop Tracking</button>
         </div>
         <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
         <br></br>
         {/* {latestJson && <pre>{JSON.stringify(latestJson, null, 2)}</pre>} */}
       
@@ -354,6 +368,7 @@ export default function LiveTracking() {
         </div>
         
         <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
         <br></br>
     </div>
 
