@@ -30,6 +30,7 @@ export default function App () {
       {path:'profile',element:<Profile/>},
       {path:'livetrack',element:<LiveTracking/>},
       {path:'statictrack',element:<StaticTracking/>},
+      
     ]}
   ])
  
