@@ -353,7 +353,7 @@ export default function LiveTracking() {
          {/* mobile view*/}
       <div className={`${styles.tracking}  ${styles.display2}`}>
         <div className="text-center w-100 pt-3  pb-1 m-auto">
-            <p className={`text-white ${styles.font} text-center`}> start tracking and Experience our live detection along with real-time voice notifications of the most important traffic related events around you. Drive safe 🙂 </p>
+            <p className={`text-white ${styles.font} text-center`}> Start tracking and experience our live detection along with real-time voice notifications of the most important traffic related events around you. Drive safe 🙂 </p>
         </div>
 
         <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
