@@ -27,9 +27,7 @@
 .color{
     color: #4BD1FF !important;
 }
-.profile{
-    margin-left: 87vh;
-}
+
 
 @media (max-width: 983px) {
     .profile{

@@ -70,7 +70,20 @@ body
     margin: 0;
     padding: 0;
 }
-
+.lane{
+    border: #1E2846 2px solid;
+    width: 21%;
+    color: white;
+    background-color: #232D4C;
+    border-radius: 10px;
+    margin-bottom:20px ;
+    margin-left: 39%;
+}
+.lane1
+{
+    margin-left: 15px;
+    
+}
 @media (max-width: 480px) {
     .display1{
         display: none;
@@ -94,6 +107,20 @@ body
         min-height: 30vh ;
         border: 3px solid #232D4C;
         border-radius: 7px;
+    }
+    .lane{
+        border: #1E2846 2px solid;
+        width: 55%;
+        color: white;
+        background-color: #232D4C;
+        border-radius: 10px;
+        margin-bottom:20px ;
+        margin-left: 21%;
+    }
+    .lane1
+    {
+        margin-left: 10px;
+        
     }
     
   }

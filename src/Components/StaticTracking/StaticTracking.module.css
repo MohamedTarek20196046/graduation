@@ -143,7 +143,30 @@ table {
     border: 1px solid #6e8ca0;
     padding: 10px;
   }
-
+  .samplesborder{
+    border: 3px solid #232D4C;
+    border-radius: 10px;
+    height: 50vh;
+    margin-left: 20px;
+  }
+  .images{
+    cursor: pointer;
+    height: 100%;
+}
+.alert{
+    width: 50%;
+    font-size: 20px;
+    border-radius: 20px;
+    position: relative;
+    top:180px
+}
+.head{
+    font-size: 60px;
+}
+.buttonedit{
+    background-color: #465578;
+    color: #4BD1FF;
+}
 
 @media (max-width: 480px) {
     .display1{
@@ -170,5 +193,18 @@ table {
         border: 3px solid #232D4C;
         border-radius: 7px;
     }
-    
+    .alert{
+        width: 100%;
+        font-size: 20px;
+        border-radius: 20px;
+        position: relative;
+        top:10px
+    }
+    .head{
+        font-size: 60px;
+    }
+    .buttonedit{
+        background-color: #465578;
+        color: #4BD1FF;
+    }
   }

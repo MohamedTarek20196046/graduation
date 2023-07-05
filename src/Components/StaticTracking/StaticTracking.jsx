@@ -10,6 +10,8 @@ import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recogniti
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate  } from 'react-router-dom';
+import { func } from 'joi';
+import image from '../images/Untitled2.png'
 const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function StaticTracking() {
 
@@ -85,8 +87,6 @@ export default function StaticTracking() {
         }
         resetTranscript()
       }
-
-     
     }
 
     const [imageFile, setImageFile] = useState(null);
@@ -94,7 +94,6 @@ export default function StaticTracking() {
     const [detections, setDetections] = useState([]);
     const hasMountedRef = useRef(false);
     useEffect(() => {
-      // This code will run only once, when the component mounts
     if(!hasMountedRef.current && localStorage.getItem("viewmode")==="true") 
     {    
       fetch(localStorage.getItem("view")).then(response => response.blob()).then(blob => {
@@ -257,9 +256,15 @@ export default function StaticTracking() {
             console.error(error);
       });
     }
+
+     function homeRedirect(){
+      navigate("/")
+     }
   
     return (
       <>
+      {localStorage.getItem('viewProfile')!=="d-none" ? (
+       <>
          <ToastContainer/>
           <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
         <TrackNav />
@@ -267,7 +272,7 @@ export default function StaticTracking() {
         <div className={`${styles.tracking} ${styles.display1} container`}>
           <div className="text-center w-75 m-auto">
             <p className="text-white fs-3 text-center">
-              static tracking is a service where the user will be able to upload a picture or a video to detect lane, Sign, traffic lights, crosswalks and pedestrians.
+            Want to try out the detection? Upload a photo with any traffic element(s) then wait for the magic
             </p>
           </div>
   
@@ -299,23 +304,24 @@ export default function StaticTracking() {
                 {detections.map((detection) => (
                   <tr >
                     <td>{detection.class}</td>
-                    <td>{detection.confidence.toFixed(2)}</td>
+                    <td>{detection.confidence.toFixed(2)*100}%</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             </div>
           )}
-          <br></br>
           
+          
+          <br></br>
         </div>
 
         {/* Mobile view */}
 
-        <div className={`${styles.tracking} ${styles.display2} `}>
+        <div className={`${styles.tracking} ${styles.display2}  `}>
           <div className={`text-center ${styles.paragraph} m-auto`}>
             <p className="text-white fs-5 text-center">
-              upload your image to start detecting your environment
+            Want to try out the detection? Upload a photo with any traffic element(s) then wait for the magic
             </p>
           </div>
   
@@ -338,16 +344,16 @@ export default function StaticTracking() {
           {detections.length > 0 && (
             <div className="text-white  text-center">
               <h3 className={`${styles.mobfont1}`}>These are the objects detected by our model</h3>
-              <table >
-              <tbody>
-                <tr>
+              <table className=' w-75 mx-auto' >
+              <tbody  >
+                <tr >
                   <th>Class</th>
                   <th>Confidence</th>
                 </tr>
                 {detections.map((detection) => (
-                  <tr >
+                  <tr  >
                     <td>{detection.class}</td>
-                    <td>{detection.confidence.toFixed(2)}</td>
+                    <td>{detection.confidence.toFixed(2)*100}%</td>
                   </tr>
                 ))}
               </tbody>
@@ -359,6 +365,15 @@ export default function StaticTracking() {
 
         <Footer />
         </AnimatedPage>
+      </>
+      ) : (
+        <div className={`${styles.alert} mx-auto  text-center p-5`}>
+          <img className={`${styles.imageEdit}`} src={image} />
+          <h1 className={`${styles.head} text-info`}>404 Error</h1>
+          <p className={`text-info`}>You must be logged in to access this page</p>
+          <button className={`${styles.buttonedit}`} onClick={homeRedirect}>Return To HomePage</button>
+          </div>
+        )}
       </>
     );
   }

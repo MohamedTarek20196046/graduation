@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import style from './Service.module.css'
-import lane from '../images/lane.jpeg'
-import Pedestrian from '../images/Pedestrian-Detection-Results.png'
+import lane from '../images/crosswalk.jpg'
+import Pedestrian from '../images/Person.png'
 import cross from '../images/cross2.jpg'
-import sign from '../images/stop.jpg'
+import vechile from '../images/Vechile.png'
+import sign from '../images/StopSign.png'
 import traffic from '../images/traffic-light-detection-using-tensorflow-object-detection-api-fig7-755150.jpg'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -15,6 +16,7 @@ export default function Service() {
     { id: 'pedestrian', title: 'Pedestrian Detection' },
     { id: 'trafficLights', title: 'Traffic Lights Detection' },
     { id: 'stop', title: 'Stop Sign Detection' },
+    { id: 'Vehicle', title: 'Vehicle Detection'}
     // Add other tabs here...
   ]
   const [tabIndex, setTabIndex] = useState(0)
@@ -24,7 +26,7 @@ export default function Service() {
       const nextIndex = (tabIndex + 1) % tabs.length
       setTabIndex(nextIndex)
       setActiveTab(tabs[nextIndex].id)
-    }, 7000)
+    }, 9000)
     return () => clearInterval(interval)
   }, [tabIndex, tabs])
 
@@ -66,7 +68,7 @@ export default function Service() {
               <div>
                 <h4 className={`${style.textcolor}  ${style.edit2}`}>Live Detection</h4>
 
-                <p className='text-white'>Perform object detection in real-time using a camera's live feed. This is our main service that we provide along with the voice notifications we send upon detecting crucial elements and, we know for a fact that it will help drivers around the world.</p>
+                <p className='text-white'>Perform object detection in real-time using a camera's live feed. This is our main service that we provide along with the voice notifications we send upon detecting crucial elements, and we know for a fact that it will help drivers around the world.</p>
               </div>
             </div>
 
@@ -83,7 +85,7 @@ export default function Service() {
             <div className="col-md-12 d-flex  align-items-center justify-content-center">
               <div>
                 <h4 className={`${style.textcolor} ${style.edit2}`}>Static Detection</h4>
-                <p className='text-white'>Upload any photo that you want and out model will detect the traffic environment objects in it. It is mainly used to let the user be familiar with our system and to test it statically and show them how our model works and what it detects.</p>
+                <p className='text-white'>Upload any photo that you want and our model will detect the traffic environment objects in it. It is mainly used to let the user be familiar with our system and to test it statically and show them how our model works and what it detects.</p>
               </div>
             </div>
 
@@ -141,12 +143,14 @@ const images = {
   lane: lane,
   pedestrian: Pedestrian,
   trafficLights: traffic,
-  stop: sign
+  stop: sign,
+  Vehicle:vechile
 }
 
 const descriptions = {
   lane: 'Lane and Cross-walks detection is a crucial component of advanced driver-assistance systems that helps drivers maintain their lane and avoid accidents. Lane detection algorithms use computer vision techniques to identify lane markings on the road and estimate the vehicle\'s position relative to them. This detection system is particularly useful on highways and busy roads.',
-  pedestrian: 'Pedestrian detection is an essential technology for improving pedestrian safety on our roads. Using our model we can identify and track pedestrians in real-time and provide alerts to drivers to help avoid collisions. Pedestrian detection systems have become increasingly common in modern vehicles and, will help in features such as automatic emergency braking.',
-  trafficLights: 'Traffic-light detection our model identifies the location and status of traffic lights on the road (red/green light). This technology is particularly useful for autonomous vehicles that need to react to changing traffic conditions on the road to help reduce traffic congestion.',
-  stop: 'Stop signs detection is an essential component of advanced driver-assistance systems that helps drivers stay informed about critical road signs. Using our trained model we can recognize and interpret stop signs, ensuring that drivers are alerted by a voice notification to the need to stop at intersections. It is used to improve driver safety and reducing the risk of accidents caused by failure to observe stop signs'
+  pedestrian: 'Pedestrian detection is an essential technology for improving pedestrian safety on our roads. Using our model we can identify and track pedestrians in real-time and provide alerts to drivers to help avoid collisions. Pedestrian detection systems have become increasingly common in modern vehicles, and will help in features such as automatic emergency braking.',
+  trafficLights: 'Our model identifies the location and status of traffic lights on the road. This technology is particularly useful for autonomous vehicles that need to react to changing traffic conditions on the road to help reduce traffic congestion.',
+  stop: 'Stop signs detection is an essential component of advanced driver-assistance systems that helps drivers stay informed about critical road signs. Using our trained model we can recognize and interpret stop signs, ensuring that drivers are alerted by a voice notification to the need to stop at intersections. It is used to improve driver safety and reducing the risk of accidents caused by failure to observe stop signs.',
+  Vehicle :'Vehicle detection is a crucial aspect in traffic monitoring while driving. In the realm of autonomous driving, vehicle detection serves as a fundamental component. Autonomous vehicles heavily rely on accurate and robust vehicle detection algorithms to perceive and interpret their surroundings. So, our model detects all types of vehicles ranging from cars obviously to bicycles and even trains!!'
 }

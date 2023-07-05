@@ -10,6 +10,7 @@ import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recogniti
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate  } from 'react-router-dom';
+import {Switch} from 'antd'
 const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function LiveTracking() {
     const [isRecording, setIsRecording] = useState(false);
@@ -89,7 +90,7 @@ export default function LiveTracking() {
   const [latestJson, setLatestJson] = useState(null);
   const [streaming, setStreaming] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
-
+  const [detectLane, setDetectLane] = useState(false);
   const startStream = async () => {
     try {
       const video = videoRef.current;
@@ -170,7 +171,7 @@ export default function LiveTracking() {
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'https://terfci.msp-asu.tech/detect_image',
+            'https://terfci.msp-asu.tech/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
@@ -203,7 +204,7 @@ export default function LiveTracking() {
         } catch (error) {
           setError(error);
         }
-      }, 200);
+      }, 300);
       setIntervalId(id);
     } catch (error) {
       setError(error);
@@ -223,6 +224,7 @@ export default function LiveTracking() {
     setLatestJson(null);
     setStreaming(false);
     setIntervalId(null);
+    window.location.reload(false);
   };
 
   useEffect(() => {
@@ -280,7 +282,19 @@ export default function LiveTracking() {
       stopStream();
     }
   };
-    
+  const handleDetectLaneChange = () => {
+    const newDetectLane = !detectLane;
+    setDetectLane(newDetectLane);
+    sendDetectLaneToServer(newDetectLane);
+  };
+
+  const sendDetectLaneToServer = async (detectLaneValue) => {
+    try {
+      await axios.post('https://terfci.msp-asu.tech/update_detect_lane', { detectLane: detectLaneValue });
+    } catch (error) {
+      setError(error);
+    }
+  };
   return (
    <>
     <ToastContainer
@@ -301,9 +315,7 @@ export default function LiveTracking() {
       <div className={`${styles.tracking} ${styles.display1} container`}>
         <div className="text-center w-75 m-auto">
           <p className="text-white fs-3 text-center">
-            Live tracking is a dynamic service where the user will be able to
-            open the camera and detect lane, Sign, traffic lights, crosswalks and pedestrians while your camera is
-            rolling. </p>
+          Press on the start tracking button and try out our live tracking now!! Experience our live detection along with real-time voice notifications of the most important traffic related events around you. Drive safe 🙂 </p>
         </div>
 
         <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
@@ -313,19 +325,21 @@ export default function LiveTracking() {
           {latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
           
         </div>
-
+        
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
           <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream} disabled={streaming}>Start Tracking</button>
           <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming}>Stop Tracking</button>
         </div>
-
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
+        <br></br>
         {/* {latestJson && <pre>{JSON.stringify(latestJson, null, 2)}</pre>} */}
-
+      
+        
       </div>
          {/* mobile view*/}
       <div className={`${styles.tracking}  ${styles.display2}`}>
-        <div className="text-center w-75 pt-3 pb-1 m-auto">
-            <p className={`text-white ${styles.font} text-center`}>open your camera and start detecting </p>
+        <div className="text-center w-100 pt-3  pb-1 m-auto">
+            <p className={`text-white ${styles.font} text-center`}> start tracking and Experience our live detection along with real-time voice notifications of the most important traffic related events around you. Drive safe 🙂 </p>
         </div>
 
         <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
@@ -338,6 +352,9 @@ export default function LiveTracking() {
             <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
             <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming} >Stop Tracking</button>
         </div>
+        
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
+        <br></br>
     </div>
 
 

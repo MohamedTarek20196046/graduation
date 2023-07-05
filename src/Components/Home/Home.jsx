@@ -105,10 +105,27 @@ export default function Home({ saveUserData }) {
     let myUser = { ...user }
     myUser[event.target.name] =
       event.target.name === 'profile_picture' ? event.target.files[0] : event.target.value;
-      if(event.target.name === 'profile_picture'){
+      if(event.target.name === 'profile_picture')
+      {
+        if (event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg') {
         console.log(event.target.files[0]) 
         setImage(event.target.files[0])
         setBool('yes')
+      }
+      else
+      {
+        toast.warn('The image must be in a png, jpg, or jpeg format. A default image was placed', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+          return;
+      }
       }
     setUser(myUser);
   }
@@ -123,8 +140,9 @@ export default function Home({ saveUserData }) {
   async function check() {
     
     let { data } = await axios.post("https://backend-ab6i.onrender.com/check", user);
+    
     if (data.message === 'not found') {
-      toast.info('Your account is being created ',{
+      toast.info('Your account is being created.',{
         position: "top-center",
         autoClose: false,
         hideProgressBar: true,
@@ -137,7 +155,7 @@ export default function Home({ saveUserData }) {
       sendRegisterDatatoApi()
     }
     else {
-      toast.warn('Sorry this email is already used ', {
+      toast.warn('Sorry this email is already used.', {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -160,7 +178,7 @@ export default function Home({ saveUserData }) {
       const urla = await response1.data.url
       formData.append('profile_picture', urla);
     }else{
-      formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1687301327/default_le6jnb.jpg");
+      formData.append('profile_picture', "https://res.cloudinary.com/djsf0enir/image/upload/v1688361175/facebook_huxaw2.jpg");
     }
     
    
@@ -180,7 +198,7 @@ export default function Home({ saveUserData }) {
       if (response.data.message === 'success') {
         toast.dismiss()
         login();
-        toast.success('Please login to start detecting ',{
+        toast.success('Please login to start detecting.',{
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -225,7 +243,7 @@ export default function Home({ saveUserData }) {
     }
     else {
       //seterrorRegister(data.message)
-      toast.error('wrong credentials ', {
+      toast.error('Wrong credentials.', {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -367,14 +385,15 @@ export default function Home({ saveUserData }) {
     <AnimatedPage>
     <Navbar />
     <header id="Home" className="container-fluid d-flex justify-content-center align-items-center">
-      <div className="header-content text-center text-white p-3">
+      <div className={`header-content text-center  p-3`}>
+        <div className={`${styles.back}`}>
         <h4>Welcome !</h4>
-        <h2 className="my-3">I am your Smart recognition system </h2>
+        <h2 className="my-1">I am your Smart recognition system </h2>
         <div className="d-flex justify-content-center align-items-center">
           <p className="fs-4">I am ready to help</p>
           <i className="fa-regular fa-face-smile-wink fs-3 ms-2 mb-3"></i>
         </div>
-
+        </div>
         <button id="joinBtn" className={`${styles.join} w-50 btn rounded-pill p-3 fs-3 mt-5 ${localStorage.getItem('Signbtn')}`} onClick={toggleModel}>Join us</button>
 
         <Link to="/livetrack">
@@ -414,10 +433,10 @@ export default function Home({ saveUserData }) {
                 <p>{errorListRegister.filter((err) => err.context.label === 'email')[0]?.message}</p>
               </div> : ''}
 
-              <input name='Phonenumber' className={`form-control w-75 mb-3 m-auto ${styles.formControl}  `} required type="text" placeholder="Please enter your Phonenumber" onChange={getUserData} />
+              <input name='Phonenumber' className={`form-control w-75 mb-3 m-auto ${styles.formControl}  `} required type="number" placeholder="Please enter your Phonenumber" onChange={getUserData} />
 
               {errorListRegister.filter((err) => err.context.label === 'Phonenumber')[0]?.message ? <div className='alert alert-danger m-auto p-0 my-2 w-75'>
-                <p>The Phonenumber must be atLeast 11 characters</p>
+                <p>The Phonenumber must be exactly 11 numbers</p>
               </div> : ''}
               <input name='profile_picture' type="file" className={`form-control w-75 mb-3 m-auto ${styles.formControl}`} placeholder="Please select your ProfilePic" onChange={getUserData} />
               

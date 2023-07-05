@@ -4,6 +4,7 @@ header
     min-height: 100vh;
     background-size: cover;
     background-position: center center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,1);
 }
 body::-webkit-scrollbar {
     display: none;
@@ -12,6 +13,7 @@ body::-webkit-scrollbar {
     background-color: #2A6582 !important;
     color: white !important;
     transition: transform 0.3s ease-in-out, background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+
   }
   
   .join:hover {
@@ -77,6 +79,11 @@ body::-webkit-scrollbar {
     color: #4BD1FF !important;
     opacity: 0.8;
     cursor: pointer;
+}
+.back{
+    color:rgb(255, 255, 255);
+    font-weight: 200px;
+   
 }
 @keyframes pulse {
     0% {

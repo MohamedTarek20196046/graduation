@@ -27,14 +27,39 @@ body
 .editbtn
 { background-color: #1E2846 !important;
     color: white !important;
+    margin-left: 10%;
 
 }
+.editbtn1
+{ background-color: #1E2846 !important;
+    color: white !important;
+    margin-left: 12%;
+
+}
+.editbtn2
+{ background-color: #1E2846 !important;
+    color: white !important;
+    margin-left: 20%;
+
+}
+
 
 .editbtn:hover
 {
     background-color: #2A6582 !important;
     color: white !important;
 }
+.editbtn1:hover
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+}
+.editbtn2:hover
+{
+    background-color: #2A6582 !important;
+    color: white !important;
+}
+
 
 .display1{
     display: block;
@@ -75,6 +100,37 @@ body
     color: #f76666;
     font-size: 20px;
 }
+
+.label1{
+    color: rgb(245, 243, 243);
+    margin-right: 10px;
+    font-size: 30px;
+}
+.profilebox{
+    margin-top: 28px;
+    min-height: 30vh;
+    width: 100%;
+    border: 1px solid;
+    border-radius: 10px;
+}
+.form1{
+    margin-left: 20px;
+}
+.alert{
+    width: 50%;
+    font-size: 20px;
+    border-radius: 20px;
+    position: relative;
+    top:180px
+}
+.head{
+    font-size: 60px;
+}
+.buttonedit{
+    background-color: #465578;
+    color: #4BD1FF;
+}
+
 @media (max-width: 480px) {
     .display1{
         display: none;
@@ -97,11 +153,23 @@ body
         border: #1E2846 !important;
     }
     .editbtn
-    { 
-        background-color: #1E2846 !important;
+    { background-color: #1E2846 !important;
         color: white !important;
         margin-left: 25%;
+
     }
+    .editbtn1
+    {   background-color: #1E2846 !important;
+        color: white !important;
+        margin-left: 15%;
+
+    }
+    .editbtn2
+    {   background-color: #1E2846 !important;
+        color: white !important;
+        margin-left: 15%;
+    }
+
     .choose
     { 
         background-color: #1E2846 !important;
@@ -131,7 +199,9 @@ body
     }
     .profileimg{
         padding-top: 15px;
-        margin-left: 13%;
+        border: #1E2846 1px;
+        width: 100%;
+        border-radius: 15px;
        
     }
     .notice
@@ -139,5 +209,23 @@ body
         color: #f76666;
         font-size: 15px;
         
+    }
+    .label1{
+        color: rgb(245, 243, 243);
+        font-size: 20px;
+    }
+    .alert{
+        width: 100%;
+        font-size: 20px;
+        border-radius: 20px;
+        position: relative;
+        top:10px
+    }
+    .head{
+        font-size: 60px;
+    }
+    .buttonedit{
+        background-color: #465578;
+        color: #4BD1FF;
     }
   }
