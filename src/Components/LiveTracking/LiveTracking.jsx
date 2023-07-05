@@ -224,7 +224,6 @@ export default function LiveTracking() {
     setLatestJson(null);
     setStreaming(false);
     setIntervalId(null);
-    window.location.reload(false);
   };
 
   useEffect(() => {
