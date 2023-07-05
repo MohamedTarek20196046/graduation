@@ -107,7 +107,7 @@ export default function LiveTracking() {
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'http://localhost:5000/detect_video',
+            'https://terfci.msp-asu.tech/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
@@ -172,7 +172,7 @@ export default function LiveTracking() {
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
-            'http://localhost:5000/detect_video',
+            'https://terfci.msp-asu.tech/detect_video',
             formData,
             {
               headers: { 'Content-Type': 'multipart/form-data' },
@@ -290,7 +290,7 @@ export default function LiveTracking() {
 
   const sendDetectLaneToServer= async (detectLaneValue) => {
     try {
-      await axios.post('http://localhost:5000/update_detect_lane', { detectLane: detectLaneValue });
+      await axios.post('https://terfci.msp-asu.tech/update_detect_lane', { detectLane: detectLaneValue });
     } catch (error) {
       setError(error);
     }
@@ -303,7 +303,7 @@ export default function LiveTracking() {
 
   const sendCrossWalkToServer  = async (CrossWalkValue) => {
     try {
-      await axios.post('http://localhost:5000/update_detect_crosswalk', { crossWalk: CrossWalkValue });
+      await axios.post('https://terfci.msp-asu.tech/update_detect_crosswalk', { crossWalk: CrossWalkValue });
     } catch (error) {
       setError(error);
     }
