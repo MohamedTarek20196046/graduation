@@ -356,11 +356,12 @@ export default function LiveTracking() {
             <p className={`text-white ${styles.font} text-center`}> Start tracking and experience our live detection along with real-time voice notifications of the most important traffic related events around you. Drive safe 🙂 </p>
         </div>
 
-        <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
-            <video ref={videoRef} className={`${styles.cameraIcon} d-none`}  />
-            {latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
-            
-        </div>
+        <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
+            {!streaming && <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>}
+            {/* {error && <div>{error.message}</div>} */}
+            <video ref={videoRef} className={`${styles.cameraIcon} d-none`} />
+            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
+          </div>
 
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
             <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
