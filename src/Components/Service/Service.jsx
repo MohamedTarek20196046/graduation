@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import style from './Service.module.css'
 import lane from '../images/crosswalk.jpg'
 import Pedestrian from '../images/Person.png'
-import cross from '../images/cross2.jpg'
 import vechile from '../images/Vechile.png'
 import sign from '../images/StopSign.png'
 import traffic from '../images/traffic-light-detection-using-tensorflow-object-detection-api-fig7-755150.jpg'
@@ -10,17 +9,16 @@ import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 export default function Service() {
   const [activeTab, setActiveTab] = useState('lane')
-
+  const [tabIndex, setTabIndex] = useState(0)
+  const isSmallScreen = useMediaQuery({ maxWidth: 700 })
   const tabs = [
     { id: 'lane', title: 'Lane & Crosswalk Detection' },
     { id: 'pedestrian', title: 'Pedestrian Detection' },
     { id: 'trafficLights', title: 'Traffic Lights Detection' },
     { id: 'stop', title: 'Stop Sign Detection' },
     { id: 'Vehicle', title: 'Vehicle Detection'}
-    // Add other tabs here...
   ]
-  const [tabIndex, setTabIndex] = useState(0)
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       const nextIndex = (tabIndex + 1) % tabs.length
@@ -54,7 +52,7 @@ export default function Service() {
       return null
     }
   })
-  const isSmallScreen = useMediaQuery({ maxWidth: 700 })
+  
   return (
     <section id="services" className={style.services}>
       <div className="container  text-center  p-4">
@@ -108,7 +106,7 @@ export default function Service() {
                   <ul className="dropdown-menu" aria-labelledby="tabDropdown">
                     {tabs.map(tab => (
                       <li key={tab.id} className={`nav-item `}>
-                        <a className={`dropdown-item ${activeTab === tab.id ? 'active' : ''}`} onClick={() => tabClick(tab.id)}>{tab.title}</a>
+                        <div className={`dropdown-item ${activeTab === tab.id ? 'active' : ''}`} onClick={() => tabClick(tab.id)}>{tab.title}</div>
                       </li>
                     ))}
                   </ul>
@@ -125,7 +123,7 @@ export default function Service() {
             <ul className={`nav  nav-tabs  ${style.navtest} d-flex justify-content-center`}>
               {tabs.map(tab => (
                 <li key={tab.id} className={`nav-item `}>
-                  <a className={`nav-link ${style.navlink} ${activeTab === tab.id ? 'active' : ''}`} onClick={() => tabClick(tab.id)}>{tab.title}</a>
+                  <div className={`nav-link ${style.navlink} ${activeTab === tab.id ? 'active' : ''}`} onClick={() => tabClick(tab.id)}>{tab.title}</div>
                 </li>
               ))}
             </ul>

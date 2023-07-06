@@ -27,7 +27,9 @@
 .color{
     color: #4BD1FF !important;
 }
-
+.cursor{
+    cursor: pointer;
+}
 
 @media (max-width: 983px) {
     .profile{

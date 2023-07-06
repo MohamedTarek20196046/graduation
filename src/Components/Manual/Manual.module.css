@@ -12,7 +12,42 @@
 
 .about p
 {
-    letter-spacing: 0px;
+  
+}
+.serviceCard
+{
+    background-color: #2A6582 !important;
+    border-radius: 20px !important;
+    box-shadow: none ;
+}
+.serviceCard1
+{
+    background-color: #1e485d !important;
+    border-radius: 20px !important;
+    box-shadow: none ;
+}
+.laneIcon {
+    color: #FFA500;
+    
+  }
+  .laneIcon1 {
+    color: red;
+    
+  }
+
+.textcolor
+{
+    color: #4BD1FF !important;
+}
+.edit3{
+    display: flex;
+   
+   justify-content: center;
+}
+.edit2{
+    display: flex;
+   
+   
 }
 
 .join {

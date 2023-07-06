@@ -13,15 +13,29 @@ import { useNavigate  } from 'react-router-dom';
 import {Switch} from 'antd'
 const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function LiveTracking() {
+    const switchRef = useRef(null);
+    const switchRef1 = useRef(null);
+    const switchRef2 = useRef(null);
+    const switchRef3 = useRef(null);
+    const switchRef4 = useRef(null);
+    const switchRef5 = useRef(null);
+    const switchRef6 = useRef(null);
+    const switchRef7 = useRef(null)
     const [isRecording, setIsRecording] = useState(false);
-  
-    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const { transcript, resetTranscript,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const videoRef = useRef(null);
+    const [error1, setError] = useState(null);
+    const [latestFrame, setLatestFrame] = useState(null);
+    const [streaming, setStreaming] = useState(false);
+    const [intervalId, setIntervalId] = useState(null);
+    const [detectLane, setDetectLane] = useState(false);
+    const [CrossWalk, setCrossWalk] = useState(false);
     const navigate = useNavigate ();
     const toggleListen = () => {
       if(!browserSupportsSpeechRecognition){
         alert("your browser doesn't support mic ")
       }
-      if (!isRecording) {
+      if (!isRecording) {   //voice commands
         toast.info("mic on", {
           position: "top-center",
           autoClose: 2000,
@@ -78,94 +92,119 @@ export default function LiveTracking() {
               localStorage.setItem('live','text-info')
               localStorage.setItem('profilecolor','text-white')
           }
+          else if(transcript.includes("lane") || transcript.includes("Lane"))
+          {
+            switchRef.current.click();
+            switchRef2.current.click();
+            
+          }
+          else if(transcript.includes("crosswalk") || transcript.includes("Crosswalk"))
+          {
+            switchRef1.current.click();
+            switchRef3.current.click(); 
+          }
+          else if(transcript.includes("start") || transcript.includes("Start"))
+          {
+            switchRef4.current.click();
+            switchRef5.current.click();
+            
+          }
+          else if(transcript.includes("stop") || transcript.includes("Stop"))
+          {
+            console.log("heheh");
+            switchRef6.current.click();
+            switchRef7.current.click(); 
+          }
           resetTranscript()
       }
-
-     
     }
 
-    const videoRef = useRef(null);
-  const [error, setError] = useState(null);
-  const [latestFrame, setLatestFrame] = useState(null);
-  const [latestJson, setLatestJson] = useState(null);
-  const [streaming, setStreaming] = useState(false);
-  const [intervalId, setIntervalId] = useState(null);
-  const [detectLane, setDetectLane] = useState(false);
-  const [CrossWalk, setCrossWalk] = useState(false);
-  const startStream = async () => {
-    try {
-      const video = videoRef.current;
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
-      video.play();
-      setStreaming(true);
-      let count=102;
-      let count1=600;
-      const id = setInterval(async () => {
-        try {
-          const imageBlob = await getImageFromStream(stream);
-          const formData = new FormData();
-          formData.append('image', imageBlob);
-          const response = await axios.post(
-            'https://terfci.msp-asu.tech/detect_video',
-            formData,
-            {
-              headers: { 'Content-Type': 'multipart/form-data' },
-              responseType: 'json',
-            }
-          );
-          setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
-          setLatestJson(response.data);
-          response.data.detections.forEach((detection) => {
-            count++;
-            count1++;
-            if (detection.class.includes("stop")) {
-              if (count > 101 ) {
-                const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
-                speechSynthesis.speak(utterance);
-                count= 0;
-              } 
-            
-            } else if(detection.class.includes("red")) {
-              
-              if (count1 > 650 ) {
-                const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
-                speechSynthesis.speak(utterance);
-                count1= 0;
-              } 
-
-            }
-          });
-        } catch (error) {
-          setError(error);
-        }
-      }, 200);
-
-      setIntervalId(id);
-    } catch (error) {
-      setError(error);
-    }
-  };
-
-  const startStream1 = async () => {
-    try {
+    const startStream = async () => {
+      try {
         const video = videoRef.current;
-        const constraints = {
-          video: true
-        };
-        
-        if (navigator.mediaDevices.getSupportedConstraints().facingMode) {
-          constraints.video = {
-            facingMode: { exact: "environment" }
-          };
-        }
-        
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
         video.play();
         setStreaming(true);
-        let count=51;
-        let count1=51;
+        let count = 600;
+        let count1 = 900;
+        let count2 = 130;
+        const id = setInterval(async () => {
+          try {
+            const imageBlob = await getImageFromStream(stream);
+            const formData = new FormData();
+            formData.append('image', imageBlob);
+            const response = await axios.post(
+              'https://terfci.msp-asu.tech/detect_video',
+              formData,
+              {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                responseType: 'json',
+              }
+            );
+            setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
+  
+            if(response.data.nearest_dist<2 && response.data.nearest_dist>0.8)
+            {
+              if(count2>130)
+              {
+                const utterance = new SpeechSynthesisUtterance("There is a pedestrian ahead of you");
+                      speechSynthesis.speak(utterance);
+                count2=0;
+              } 
+            }
+            count2++;
+            response.data.detections.forEach((detection) => {
+              count++;
+              count1++;
+              if (detection.class.includes("stop")) {
+                if (count > 650) {
+                  const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
+                  speechSynthesis.speak(utterance);
+                  count = 0;
+                }
+  
+              } else if (detection.class.includes("red")) {
+  
+                if (count1 > 950) {
+                  const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
+                  speechSynthesis.speak(utterance);
+                  count1 = 0;
+                }
+  
+              }
+            });
+          } catch (error) {
+            setError(error);
+          }
+        }, 200);
+  
+        setIntervalId(id);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+  const startStream1 = async () => {
+    try {
+      const video = videoRef.current;
+      const constraints = {
+        video: true
+      };
+
+      if (navigator.mediaDevices.getSupportedConstraints().facingMode) {
+        constraints.video = {
+          facingMode: { exact: "environment" }
+        };
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      video.srcObject = stream;
+      video.play();
+      setStreaming(true);
+      let count = 600;
+      let count1 = 600;
+      let count2 = 60;
       const id = setInterval(async () => {
         try {
           const imageBlob = await getImageFromStream(stream);
@@ -180,28 +219,37 @@ export default function LiveTracking() {
             }
           );
           setLatestFrame(`data:image/jpeg;base64,${response.data.image}`);
-          setLatestJson(response.data);
+          if(response.data.nearest_dist<2 && response.data.nearest_dist>0.8)
+          {
+            if(count2>60)
+            {
+              const utterance = new SpeechSynthesisUtterance("There is a pedestrian ahead of you");
+                    speechSynthesis.speak(utterance);
+              count2=0;
+            } 
+          }
+          count2++;
           response.data.detections.forEach((detection) => {
             count++;
             count1++;
             if (detection.class.includes("stop")) {
-              if (count > 50 ) {
+              if (count > 50) {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a stop sign");
                 speechSynthesis.speak(utterance);
-                count= 0;
-              } 
-            
-            } else if(detection.class.includes("red")) {
-              
-              if (count1 > 50 ) {
+                count = 0;
+              }
+
+            } else if (detection.class.includes("red")) {
+
+              if (count1 > 300) {
                 const utterance = new SpeechSynthesisUtterance("You are approaching a red light");
                 speechSynthesis.speak(utterance);
-                count1= 0;
-              } 
+                count1 = 0;
+              }
 
             }
           });
-          
+
         } catch (error) {
           setError(error);
         }
@@ -212,29 +260,19 @@ export default function LiveTracking() {
     }
   };
 
-
-
-
-  const stopStream = () => {
+  const stopStream = () => {    //function to stop the stream
     clearInterval(intervalId);
     const stream = videoRef.current?.srcObject;
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
     setLatestFrame(null);
-    setLatestJson(null);
     setStreaming(false);
     setIntervalId(null);
   };
-
+  
   useEffect(() => {
-    let id;
-
-    const start = async () => {
-      id = await startStream();
-      
-    };
-
+    
     const stop = () => {
       stopStream();
     };
@@ -244,10 +282,10 @@ export default function LiveTracking() {
     };
   }, []);
 
-  const getImageFromStream = (stream) => {
+  const getImageFromStream = (stream) => {    
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 640;
+    canvas.width = 640; 
     canvas.height = 480;
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
     return new Promise((resolve, reject) => {
@@ -283,6 +321,7 @@ export default function LiveTracking() {
     }
   };
   const handleDetectLaneChange = () => {
+    console.log('Lane change detected!');
     const newDetectLane = !detectLane;
     setDetectLane(newDetectLane);
     sendDetectLaneToServer(newDetectLane);
@@ -310,18 +349,7 @@ export default function LiveTracking() {
   };
   return (
    <>
-    <ToastContainer
-    position="top-center"
-    autoClose={3000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="dark"
-    />
+    <ToastContainer />
     <FloatButton onClick={toggleListen} icon={<AudioOutlined />}/>
    <TrackNav/>
    <AnimatedPage>
@@ -335,18 +363,18 @@ export default function LiveTracking() {
             {!streaming && <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>}
             {/* {error && <div>{error.message}</div>} */}
             <video ref={videoRef} className={`${styles.cameraIcon} d-none`} />
-            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
+            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} alt='video will play'/>}
           </div>
 
         
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
-          <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream} disabled={streaming}>Start Tracking</button>
-          <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming}>Stop Tracking</button>
+          <button className={`btn p-2  ${styles.trackBtn} me-3`} ref={switchRef4} onClick={handleStartStream} disabled={streaming}>Start Tracking</button>
+          <button className={`btn p-2  ${styles.trackBtn} me-3`} ref={switchRef6} onClick={handleStopStream} disabled={!streaming}>Stop Tracking</button>
         </div>
-        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
-        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch ref={switchRef} className={`${styles.lane1} `} onClick={handleDetectLaneChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch ref={switchRef1} className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
         <br></br>
-        {/* {latestJson && <pre>{JSON.stringify(latestJson, null, 2)}</pre>} */}
+        
       
         
       </div>
@@ -358,18 +386,17 @@ export default function LiveTracking() {
 
         <div className={`${styles.camera}  m-auto d-flex justify-content-center align-items-center`}>
             {!streaming && <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>}
-            {/* {error && <div>{error.message}</div>} */}
             <video ref={videoRef} className={`${styles.cameraIcon} d-none`} />
-            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} />}
+            {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} alt='video will play'/>}
           </div>
 
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
-            <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
-            <button className={`btn p-2  ${styles.trackBtn} me-3`} onClick={handleStopStream} disabled={!streaming} >Stop Tracking</button>
+            <button className={`btn p-2  ${styles.trackBtn} me-3`} ref={switchRef5} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
+            <button className={`btn p-2  ${styles.trackBtn} me-3`} ref={switchRef7} onClick={handleStopStream} disabled={!streaming} >Stop Tracking</button>
         </div>
         
-        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
-        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Lane detection<Switch ref={switchRef2} className={`${styles.lane1}`} onClick={handleDetectLaneChange}/></div>
+        <div className={`${styles.lane}  md-4  py-3 d-flex justify-content-center `}>Crosswalk detection<Switch ref={switchRef3} className={`${styles.lane2}`} onClick={handleCrossWalkChange}/></div>
         <br></br>
     </div>
 

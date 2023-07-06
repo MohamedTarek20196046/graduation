@@ -2,7 +2,7 @@ import React, { useState , useEffect , useRef } from 'react';
 import styles from './StaticTracking.module.css';
 import Footer from '../Footer/Footer';
 import TrackNav from '../TrackNav/TrackNav';
-import axios, { Axios } from 'axios'
+import axios from 'axios'
 import AnimatedPage from '../AnimatedPage'
 import { FloatButton } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
@@ -10,7 +10,6 @@ import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recogniti
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate  } from 'react-router-dom';
-import { func } from 'joi';
 import image from '../images/Untitled2.png'
 const { SpeechSynthesisUtterance, speechSynthesis } = window;
 export default function StaticTracking() {
@@ -18,11 +17,11 @@ export default function StaticTracking() {
     localStorage.setItem('static','text-info')
     localStorage.setItem('live','text-white')
     localStorage.setItem('profilecolor','text-white')
-    const [stopSign, setstopSign] = useState(false);
-    const [TrafficLight, settrafficLight] = useState(false);
+    const [processedImageURL, setProcessedImageURL] = useState(null);
+    const [detections, setDetections] = useState([]);
+    const hasMountedRef = useRef(false);
     const [isRecording, setIsRecording] = useState(false);
-  
-    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const { transcript, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
     const navigate = useNavigate ();
     const toggleListen = () => {
       if(!browserSupportsSpeechRecognition){
@@ -89,10 +88,6 @@ export default function StaticTracking() {
       }
     }
 
-    const [imageFile, setImageFile] = useState(null);
-    const [processedImageURL, setProcessedImageURL] = useState(null);
-    const [detections, setDetections] = useState([]);
-    const hasMountedRef = useRef(false);
     useEffect(() => {
     if(!hasMountedRef.current && localStorage.getItem("viewmode")==="true") 
     {    
@@ -124,6 +119,7 @@ export default function StaticTracking() {
           })
           .then(data => {
             if (data && data.image && data.detections) {
+              console.log(data);
               const imageURL = `data:image/jpeg;base64,${data.image}`;
               setProcessedImageURL(imageURL);
               setDetections(data.detections);
@@ -164,19 +160,14 @@ export default function StaticTracking() {
         })
         .catch(error => {
           console.error(error);
-        }); 
-        
+        });  
         hasMountedRef.current = true;
-        
-        
-
        }
     }, [localStorage.getItem("viewmode"), localStorage.getItem("view")]);
     
       
     async function handleImageUpload(event) {
       const file = event.target.files[0];
-      setImageFile(file);
       const formData = new FormData();
       formData.append('image', file);
       toast.info('Your image is being processed ',{
@@ -203,6 +194,7 @@ export default function StaticTracking() {
         })
         .then(data => {
           if (data && data.image && data.detections) {
+            console.log(data);
             const imageURL = `data:image/jpeg;base64,${data.image}`;
             setProcessedImageURL(imageURL);
             setDetections(data.detections);
@@ -278,7 +270,7 @@ export default function StaticTracking() {
   
           <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
             {processedImageURL ? (
-              <img src={processedImageURL} alt="Processed image" className={styles.processedImage} />
+              <img src={processedImageURL} alt="Processed " className={styles.processedImage} />
             ) : (
               <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>
             )}
@@ -327,7 +319,7 @@ export default function StaticTracking() {
   
           <div className={`${styles.camera} m-auto d-flex justify-content-center align-items-center`}>
             {processedImageURL ? (
-              <img src={processedImageURL} alt="Processed image" className={styles.processedImage} />
+              <img src={processedImageURL} alt="Processed " className={styles.processedImage} />
             ) : (
               <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>
             )}
@@ -368,7 +360,7 @@ export default function StaticTracking() {
       </>
       ) : (
         <div className={`${styles.alert} mx-auto  text-center p-5`}>
-          <img className={`${styles.imageEdit}`} src={image} />
+          <img className={`${styles.imageEdit}`} alt='Error 404' src={image} />
           <h1 className={`${styles.head} text-info`}>404 Error</h1>
           <p className={`text-info`}>You must be logged in to access this page</p>
           <button className={`${styles.buttonedit}`} onClick={homeRedirect}>Return To HomePage</button>

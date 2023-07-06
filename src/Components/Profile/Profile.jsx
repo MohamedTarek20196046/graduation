@@ -14,10 +14,17 @@ import { useNavigate  } from 'react-router-dom';
 import TrackNav from '../TrackNav/TrackNav'
 import image from '../images/Untitled2.png'
 export default function Profile() {
-
+    localStorage.setItem('actions', 'd-none')
     const [isRecording, setIsRecording] = useState(false);
     const [Uploads, setUploads] = useState([]);
-    const { transcript, resetTranscript, stopListening ,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const { transcript, resetTranscript,browserSupportsSpeechRecognition} = useSpeechRecognition({ interimResults: true});
+    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [password, setPassword] = useState(localStorage.getItem('password'));
+    const [email, setEmail] = useState(localStorage.getItem('email'));
+    const [phonenumber, setPhonenumber] = useState(localStorage.getItem('phonenumber'));
+    const [profilePicture, setProfilePicture] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
     const navigate = useNavigate ();
     const toggleListen = () => {
       if(!browserSupportsSpeechRecognition){
@@ -89,12 +96,12 @@ export default function Profile() {
 
 
 
-    localStorage.setItem('actions', 'd-none')
+    
     const click = () => {
         localStorage.clear();
     }
 
-    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+    
    
     useEffect(() => {
         axios.get(`https://backend-ab6i.onrender.com/profile_uploaded_pictures/${localStorage.getItem('idusers')}`)
@@ -115,12 +122,7 @@ export default function Profile() {
         fetchProfilePicture();
     }, []);
 
-    const [username, setUsername] = useState(localStorage.getItem('username'));
-    const [password, setPassword] = useState(localStorage.getItem('password'));
-    const [email, setEmail] = useState(localStorage.getItem('email'));
-    const [phonenumber, setPhonenumber] = useState(localStorage.getItem('phonenumber'));
-    const [profilePicture, setProfilePicture] = useState(null);
-    const [isEditMode, setIsEditMode] = useState(false);
+   
     
     async function handleSaveChanges() {
       if(username.length <2){
@@ -204,9 +206,7 @@ export default function Profile() {
             return;
           }
         }
-        
-      
-
+  
       toast.info('Your profile is updating',{
         position: "top-center",
         autoClose: false,
@@ -259,6 +259,7 @@ export default function Profile() {
         localStorage.setItem("view",secureUrl)
         navigate("/statictrack")
       }
+
       function togglefunction(){
         setIsEditMode(!isEditMode)
         setUsername(localStorage.getItem('username'))
@@ -266,9 +267,11 @@ export default function Profile() {
         setEmail(localStorage.getItem('email'))
         setPhonenumber(localStorage.getItem('phonenumber'))
       }
+
       function homeRedirect(){
         navigate("/")
        }
+
     return (
       <>
       {localStorage.getItem('viewProfile')!=="d-none" ? (
@@ -281,7 +284,7 @@ export default function Profile() {
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row p-4 ${styles.userProf}`}>
                     <div className="col-md-3">
-                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className={` ${styles.profilebox} `} />}
+                        {profilePictureUrl && <img src={profilePictureUrl} alt="user" className={` ${styles.profilebox} `} />}
                         {isEditMode && (
                             <>
                                 <label htmlFor="profilePictureInput" className={`btn mt-3 ${styles.editbtn2} rounded-pill`}>
@@ -337,7 +340,7 @@ export default function Profile() {
                 <h3 className="text-center text-white mb-4">My Profile</h3>
                 <div className={`row  ${styles.userProf}`}>
                 <div className="col-md-2">
-                        {profilePictureUrl && <img src={profilePictureUrl} alt="profile picture" className={` ${styles.profileimg}`} />}
+                        {profilePictureUrl && <img src={profilePictureUrl} alt="user" className={` ${styles.profileimg}`} />}
                         {isEditMode && (
                             <>
                                 <label htmlFor="profilePictureInput" className={`btn mt-3 ${styles.choose} ${styles.editbtn2} rounded-pill`}>
@@ -393,7 +396,7 @@ export default function Profile() {
         </>
         ) : (
           <div className={`${styles.alert} mx-auto  text-center p-5`}>
-          <img className={`${styles.imageEdit}`} src={image} />
+          <img className={`${styles.imageEdit}`} alt='error 404' src={image} />
           <h1 className={`${styles.head} text-info`}>404 Error</h1>
           <p className={`text-info`}>You must be logged in to access this page</p>
           <button className={`${styles.buttonedit}`} onClick={homeRedirect}>Return To HomePage</button>

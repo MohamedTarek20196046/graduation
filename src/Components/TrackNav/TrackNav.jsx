@@ -29,13 +29,6 @@ export default function TrackNav() {
         localStorage.setItem('profilecolor','text-white')
         navigate('/statictrack');
     }
-    function test1(event){
-        event.preventDefault();
-        localStorage.setItem('live','text-info')
-        localStorage.setItem('static','text-white')
-        localStorage.setItem('profilecolor','text-white')
-        navigate('/');
-    }
     function test3(event){
         event.preventDefault();
         localStorage.setItem('live','text-white')
@@ -49,7 +42,7 @@ export default function TrackNav() {
         <nav className={`${style.navbarBg} navbar navbar-expand-lg fixed-top`}>
   <div className="container">
     <Link className={`navbar-brand ${style.logo}`} to="/Home">
-      <img className={`${style.img1}`} src={image} />
+      <img className={`${style.img1}`} src={image} alt='logo' />
       <span className={`${style.span1}`}>Code Hub</span>
     </Link>
     <button
@@ -66,49 +59,27 @@ export default function TrackNav() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <a
-            className={`nav-link ${localStorage.getItem('live')}`}
-            aria-current="page"
-            onClick={live}
-            href=""
-          >
+          <div className={`nav-link ${style.cursor} ${localStorage.getItem('live')}`} aria-current="page" onClick={live} href="" >
             Live Tracking
-          </a>
+          </div>
         </li>
         <li className="nav-item">
-          <a
-            className={`nav-link ${localStorage.getItem('static')} ${localStorage.getItem(
-              'viewProfile'
-            )}`}
-            aria-current="page"
-            onClick={test}
-            href=""
-          >
+          <div className={`nav-link ${style.cursor} ${localStorage.getItem('static')} ${localStorage.getItem('viewProfile')}`}aria-current="page" onClick={test} >
             Static Tracking
-          </a>
+          </div>
         </li>
         <div className="ml-auto">
           <li className="nav-item">
-            <a
-              className={`nav-link ${localStorage.getItem('profilecolor')} ${style.profile} ${localStorage.getItem(
-                'viewProfile'
-              )}`}
-              aria-current="page"
-              onClick={test3}
-              href=""
-            >
+            <div className={`nav-link ${style.cursor} ${localStorage.getItem('profilecolor')} ${style.profile} ${localStorage.getItem('viewProfile')}`} aria-current="page" onClick={test3}  >
               <i className="fa-solid fa-user-large"></i>
               {localStorage.getItem('username')}
-            </a>
+            </div>
           </li>
         </div>
       </ul>
     </div>
   </div>
 </nav>
-
-
-
         </>
     )
 }
