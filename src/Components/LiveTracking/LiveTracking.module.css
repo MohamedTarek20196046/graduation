@@ -103,7 +103,7 @@ body
     }
     .camera{
         width: 90%;
-        height:15vh;
+        height:600px;
         border: 3px solid #232D4C;
         border-radius: 7px;
     }

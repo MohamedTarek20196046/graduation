@@ -207,7 +207,7 @@ export default function LiveTracking() {
       let count2 = 60;
       const id = setInterval(async () => {
         try {
-          const imageBlob = await getImageFromStream(stream);
+          const imageBlob = await getImageFromStream1(stream);
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
@@ -303,6 +303,28 @@ export default function LiveTracking() {
     });
   };
 
+  const getImageFromStream1 = (stream) => {    
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 640; 
+    canvas.height = 600;
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error('Failed to get image from stream'));
+          }
+        },
+        'image/jpeg',
+        0.8
+      );
+    });
+  };
+
+
   const handleStartStream = () => {
     if (!streaming) {
       startStream();
@@ -388,7 +410,7 @@ export default function LiveTracking() {
             {!streaming && <i className={`fa-solid fa-camera ${styles.cameraIcon}`}></i>}
             <video ref={videoRef} className={`${styles.cameraIcon} d-none`} />
             {streaming && latestFrame && <img className={`${styles.cameraOpen}`} src={latestFrame} alt='video will play'/>}
-          </div>
+        </div>
 
         <div className=" m-auto mt-md-4 w-50 p-4 d-flex justify-content-center">
             <button className={`btn p-2  ${styles.trackBtn} me-3`} ref={switchRef5} onClick={handleStartStream1} disabled={streaming}>Start Tracking</button>
