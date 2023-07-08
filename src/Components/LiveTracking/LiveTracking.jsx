@@ -111,7 +111,6 @@ export default function LiveTracking() {
           }
           else if(transcript.includes("stop") || transcript.includes("Stop"))
           {
-            console.log("heheh");
             switchRef6.current.click();
             switchRef7.current.click(); 
           }
@@ -187,16 +186,14 @@ export default function LiveTracking() {
 
   const startStream1 = async () => {
     try {
-      const video = videoRef.current;
-      const constraints = {
-        video: true
-      };
-
-      if (navigator.mediaDevices.getSupportedConstraints().facingMode) {
-        constraints.video = {
-          facingMode: { exact: "environment" }
-        };
+    const video = videoRef.current;
+    const constraints = {
+      video: {
+        width: { ideal: window.innerWidth },
+        height: { ideal: window.innerHeight },
+        facingMode: { exact: "environment" }
       }
+    };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = stream;
@@ -207,7 +204,7 @@ export default function LiveTracking() {
       let count2 = 60;
       const id = setInterval(async () => {
         try {
-          const imageBlob = await getImageFromStream(stream);
+          const imageBlob = await getImageFromStream1(stream);
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
@@ -303,7 +300,26 @@ export default function LiveTracking() {
     });
   };
 
- 
+  const getImageFromStream1 = (stream) => {    
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+     canvas.width = window.innerWidth; 
+      canvas.height = window.innerHeight;
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error('Failed to get image from stream'));
+          }
+        },
+        'image/jpeg',
+        0.8
+      );
+    });
+  };
 
 
   const handleStartStream = () => {
