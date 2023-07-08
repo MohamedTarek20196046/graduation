@@ -303,26 +303,7 @@ export default function LiveTracking() {
     });
   };
 
-  const getImageFromStream1 = (stream) => {    
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 640; 
-    canvas.height = 600;
-    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error('Failed to get image from stream'));
-          }
-        },
-        'image/jpeg',
-        0.8
-      );
-    });
-  };
+ 
 
 
   const handleStartStream = () => {
