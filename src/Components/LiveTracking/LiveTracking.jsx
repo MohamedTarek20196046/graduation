@@ -189,8 +189,6 @@ export default function LiveTracking() {
     const video = videoRef.current;
     const constraints = {
       video: {
-        width: { ideal: window.innerWidth },
-        height: { ideal: window.innerHeight },
         facingMode: { exact: "environment" }
       }
     };
