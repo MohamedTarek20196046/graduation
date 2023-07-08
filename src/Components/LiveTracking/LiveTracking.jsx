@@ -207,7 +207,7 @@ export default function LiveTracking() {
       let count2 = 60;
       const id = setInterval(async () => {
         try {
-          const imageBlob = await getImageFromStream1(stream);
+          const imageBlob = await getImageFromStream(stream);
           const formData = new FormData();
           formData.append('image', imageBlob);
           const response = await axios.post(
